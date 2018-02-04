@@ -2,7 +2,7 @@ public class Field2 {
     private static int row = 0;
     private static int column = 0;
     public static char python = 'P';
-	private static char[][] game_space ={
+    private static char[][] game_space ={
     {'.','.','.','.','.','.','.'},
     {'.','.','.','.','.','.','.'},
     {'.','.','.','.','.','.','.'},
@@ -19,30 +19,22 @@ public class Field2 {
     }
     
     public static char[][] placeObs(char obstacle){
-        game_space[0][0] = obstacle;
-        game_space[0][1] = obstacle;
-        game_space[0][2] = obstacle;
-        game_space[0][3] = obstacle;
-        game_space[0][4] = obstacle;
-        game_space[0][5] = obstacle;
-        game_space[0][6] = obstacle;
-        game_space[1][0] = obstacle;
-        game_space[2][0] = obstacle;
-        game_space[3][0] = obstacle;
-        game_space[4][0] = obstacle;
-        game_space[5][0] = obstacle;
-        game_space[6][0] = obstacle;
-        game_space[6][1] = obstacle;
-        game_space[6][2] = obstacle;
-        game_space[6][3] = obstacle;
-        game_space[6][4] = obstacle;
-        game_space[6][5] = obstacle;
-        game_space[6][6] = obstacle;
-        game_space[1][6] = obstacle;
-        game_space[2][6] = obstacle;
-        game_space[3][6] = obstacle;
-        game_space[4][6] = obstacle;
-        game_space[5][6] = obstacle;
+        for (column = 0; column < 7; column++){
+            game_space[0][column] = obstacle;
+        }
+        
+        for (column = 0; column < 7; column++){
+            game_space[6][column] = obstacle;
+        }
+        
+        for (row = 1; row < 7; row++){
+            game_space[row][0] = obstacle;
+        }
+        
+        for (row = 1; row < 7; row++){
+            game_space[row][6] = obstacle;
+        }
+        
         return game_space;
     }
     
