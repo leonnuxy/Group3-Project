@@ -1,9 +1,10 @@
+/** This class checks that a deposit is not negative and that any withdrawl does not exceed a pre set overdraft. This class can be called externally for use in checking fund transfer information */
 public class BankAccount {
     
     // Global variables set to the default values.
     double balance;
     double overdraftAmount = 100.0;
-    Customer c = new Customer();
+    Customer c;
     
     public BankAccount(){}
     public BankAccount(Customer aCustomer, double balance){
@@ -14,6 +15,10 @@ public class BankAccount {
     
     public Customer getCustomer() {
         return c;
+    }
+    
+    public void  setCustomer(Customer someCustomer){
+        c = someCustomer;
     }
     
     /* This method checks that the deposited amount is greater than 0 and adds to their total balance */
@@ -41,5 +46,4 @@ public class BankAccount {
         return overdraftAmount;
     }
 }
-
 
