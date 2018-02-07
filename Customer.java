@@ -1,3 +1,5 @@
+/** This class creates a customer that has a numerical ID and a name. This class can be called externally for use in identifying 
+individuals and relating them to a BankAccount */
 public class Customer{
     String name;
     int customerID;
