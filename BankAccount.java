@@ -6,17 +6,22 @@ public class BankAccount {
     double overdraftAmount = 100.0;
     Customer c;
     
+    /* This method sets a blank constructor */
     public BankAccount(){}
+    
+    /* This method creates a constructor that takes the values for a customer and a new balance for the bank account */
     public BankAccount(Customer aCustomer, double balance){
         this.balance = balance;
         this.c = aCustomer;
         
     }
     
+    /* This method is a getter that returns the customer information */
     public Customer getCustomer() {
         return c;
     }
     
+    /* This method is a setter that sets the name of the customer */
     public void  setCustomer(Customer someCustomer){
         c = someCustomer;
     }
