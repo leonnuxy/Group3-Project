@@ -1,9 +1,7 @@
 public class Obstacle2 {
-  private static char obsChar = 'x';
-  public static char getObsChar(){
-    return obsChar;
-  }
-
-
-
+    private char obsChar = 'x';
+    public char getObsChar(){
+        return obsChar;
+    }
 }
+
