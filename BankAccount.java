@@ -6,7 +6,7 @@ public class BankAccount {
     double overdraftAmount = 100.0;
     Customer c;
     
-    /* This method sets a blank constructor */
+    /* This is a default constructor */
     public BankAccount(){}
     
     /* This method creates a constructor that takes the values for a customer and a new balance for the bank account */
