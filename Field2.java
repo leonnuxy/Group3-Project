@@ -28,12 +28,20 @@ public class Field2 {
     
     //Starts the process of playing the game
     public int Play(){
+        boolean counter = true;
+        while (counter == true){
+            System.out.print("Play:");
+            Scanner pressed = new Scanner(System.in);
+            String press = pressed.nextLine();
+            if (Arrays.asList("1","2","3","4").contains(press)) {
+                press_out = Integer.parseInt(press);
+                counter = false;
+            }
+            else {
+                System.out.println("Invalid input, please try again.");
+            }
+        }
         System.out.println("Your score is " + score);
-        System.out.println("Press 1 to move left, press 2 to move up, press 3 to move down, and press 4 to move right.");
-        System.out.print("Play:");
-        Scanner pressed = new Scanner(System.in);
-        int press = pressed.nextInt();
-        press_out = press;
         return press_out;
     }
     
@@ -93,7 +101,7 @@ public class Field2 {
         
         //end the game if the user tries to occupy an obstacle position.
         else if (game_space[py_row][py_column] == 'x') {
-            System.out.println("You cannot move there, a wall is blocking your way! You have died! If you would like to play again, plesae run the program again.");
+            System.out.println("You cannot move there, a wall is blocking your way! You have died! If you would like to play again, please run the program again.");
             System.exit(0);
         }
         
