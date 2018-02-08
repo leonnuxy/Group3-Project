@@ -1,13 +1,18 @@
+/** This class runs the game */
 public class PlayGame {
+    
+    //set instance variables
     public static int py_row =1 ;
     public static int py_column = 1;
     public static int press_for_move;
     
+    /* Main method to constantly prompt for user input */
     public static void main(String[] args){
         Field2 space = new Field2();
         Avatar_1 ava1 = new Avatar_1();
         space.placeObs();
         space.placePython(py_row, py_column);
+        
         int count = 0;
         while (count == 0){
             space.Play();
@@ -16,7 +21,6 @@ public class PlayGame {
             ava1.upDown(press_for_move);
             py_row = ava1.getPRow();
             py_column = ava1.getPColumn();
-            System.out.println("row = " + py_row + " column = " + py_column);
             space.placePython(py_row, py_column);
         }
     }
