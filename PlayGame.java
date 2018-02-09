@@ -10,7 +10,7 @@ public class PlayGame {
     public static void main(String[] args){
         Field2 space = new Field2();
         Avatar_1 ava1 = new Avatar_1();
-        space.placeObs();
+        space.placeItems();
         space.placePython(py_row, py_column);
         System.out.println("Press 1 to move left, press 2 to move up, press 3 to move down, and press 4 to move right.");
         int count = 0;

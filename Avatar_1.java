@@ -4,12 +4,8 @@ import java.util.*;
 public class Avatar_1{
     
     //setting instance variables
-    String w;
-    String a;
-    public String s;
-    String d;
-    public int p_row = 1;
-    public int p_column = 1;
+    private int p_row = 1;
+    private int p_column = 1;
     
     /* Handles if the user is trying to move left or right */
     public int rightLeft(int press_for_ava){

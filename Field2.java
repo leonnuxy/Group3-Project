@@ -7,14 +7,14 @@ public class Field2 {
     private char[][] game_space_obstacle;
     private int row = 0;
     private int column = 0;
-    public char python = 'P';
-    public char blank = '.';
+    private char python = 'P';
+    private char blank = '.';
     public int score = 0;
     private int press_out;
     public char[][] game_space = {
     {'.','.','.','.','.','.','.'},
     {'.','.','.','.','.','.','.'},
-    {'.','.','.','.','.','.','.'},
+    {'.','.','.','.','x','.','.'},
     {'.','.','.','.','.','.','.'},
     {'.','.','.','.','.','.','.'},
     {'.','.','.','.','.','.','.'},
@@ -41,7 +41,7 @@ public class Field2 {
                 System.out.println("Invalid input, please try again.");
             }
         }
-        System.out.println("Your score is " + score);
+        System.out.println("Your score is: " + score);
         return press_out;
     }
     
@@ -51,7 +51,7 @@ public class Field2 {
     }
     
     //Places the border obstacles
-    public  char[][] placeObs(){
+    public  char[][] placeItems(){
         for (column = 0; column < 7; column++){
             game_space[0][column] = obstacle;
         }
