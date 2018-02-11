@@ -21,6 +21,7 @@ public class BankAccountWindow extends Application {
         launch(args);
     }*/
     
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         
@@ -49,10 +50,11 @@ public class BankAccountWindow extends Application {
         root.setCenter(center);
         
         deposit_button.setOnAction(new EventHandler<ActionEvent>()
+        
         {
             @Override
             public void handle(ActionEvent event) {
-                double deposit_amount = Integer.parseInt(txtDeposit.getText());
+                double deposit_amount = Double.parseDouble(txtDeposit.getText());
                 b1.deposit(deposit_amount);
                 double bank_balance = b1.getBalance();
                 customer_balance.setText("Your balance is " + bank_balance);
@@ -65,14 +67,13 @@ public class BankAccountWindow extends Application {
         {
             @Override
             public void handle(ActionEvent event) {
-                double withdraw_amount = Integer.parseInt(txtWithdraw.getText());
+                double withdraw_amount = Double.parseDouble(txtWithdraw.getText());
                 b1.withdraw(withdraw_amount);
                 double bank_balance = b1.getBalance();
                 customer_balance.setText("Your balance is " + bank_balance);
             }
         }
         );
-        
         
         
         Scene scene = new Scene(root, 450, 150);
