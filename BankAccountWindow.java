@@ -11,7 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 public class BankAccountWindow extends Application {
-    BankAccount b1 = new BankAccount();
+    Customer c1 = new Customer();
+    BankAccount b1 = new BankAccount(c1);
     Button withdraw_button;
     Button deposit_button;
     TextField txtWithdraw, txtDeposit;
@@ -29,7 +30,8 @@ public class BankAccountWindow extends Application {
         root.setPadding(new Insets(10,10,10,10));
         
         double bank_balance = b1.getBalance();
-        root.setTop(new Label("For depositing and withdrawing money from your account."));
+        root.setTop(new Label("For depositing and withdrawing money from your account: " + c1.getName()));
+        
         customer_balance = new Label("");
         root.setBottom(customer_balance);
         customer_balance.setText("Your balance is " + bank_balance);
