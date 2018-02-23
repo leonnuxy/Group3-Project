@@ -14,9 +14,14 @@ import javafx.event.EventHandler;
 // Some Classes in this Porgram were gotten from the textbook and are identified below.
 // Creates the class for with the application is named.
 public class BankAccountWindow extends Application {
-
+  String customerName = "";
+  String customerId = "";
+  double startBal = 0.0;
+  Button create_button1;
+  Label cusId, cusName, newBal;
+  TextField id, name, bal;
   Stage window;
-  Scene scene2;
+  Scene scene1, scene2;
 
 //The BankAccount class which also references "getCustomer" method through
 // the Customer class within it and assigns it to "b1.getCustomer".
@@ -29,46 +34,83 @@ public class BankAccountWindow extends Application {
 
   @Override
   public void start(Stage primaryStage) throws Exception {
+    BorderPane roots = new BorderPane();
+    roots.setPadding(new Insets(10,10,10,10));
     window = primaryStage;
-    BorderPane root = new BorderPane();
-    root.setPadding(new Insets(10,10,10,10));
 
     // displayes the balance of customer
     double bank_balance = b1.getBalance();
-    root.setTop(new Label("Hello Mr/Mrs/Miss "+ b1.getCustomer() + " Deposit and Withdraw from Account")); //"/* + c1.getName()+*/ "
+    roots.setTop(new Label("Hello Deposit and Withdraw from Account"));
+
     customer_balance = new Label("");
-    root.setBottom(customer_balance);
+
+    roots.setBottom(customer_balance);
     customer_balance.setText("Your balance is " + bank_balance);
-    GridPane center = new GridPane();
-    center.setVgap(10);
-    center.setHgap(5);
+    GridPane layout = new GridPane();
+    layout.setVgap(10);
+    layout.setHgap(5);
+
     withdraw_button = new Button("Withdraw");
-    center.add(withdraw_button, 0, 0);
+    layout.add(withdraw_button, 0, 0);
     deposit_button = new Button("Deposit");
-    center.add(deposit_button, 0, 1);
-
-
-    create_button = new Button("Create");
-    create_button.setOnAction(e -> window.setScene(scene2));
-    VBox layout1 = new VBox(20);
-    layout1.getChildren().addAll(create_button, customer_balance);
-    scene2 = new Scene(layout1, 450, 150);
-    center.add(create_button, 0, 2);
-
+    layout.add(deposit_button, 0, 1);
 
     txtWithdraw = new TextField("0");
     txtWithdraw.setPrefWidth(100);
     txtDeposit = new TextField("0");
     txtDeposit.setPrefWidth(100);
-    center.add(txtWithdraw, 1, 0);
-    center.add(txtDeposit, 1, 1);
-    root.setCenter(center);
+    layout.add(txtWithdraw, 1, 0);
+    layout.add(txtDeposit, 1, 1);
+    roots.setCenter(layout);
 
+////////////////////////////////////////////////////////////////////////////////
+    create_button = new Button("Create");
+    layout.add(create_button, 0, 4);
+    create_button.setOnAction(e -> window.setScene(scene2));
+
+    GridPane layout1 = new GridPane();
+    layout1.setVgap(10);
+    layout1.setHgap(5);
+    cusId = new Label("Customer ID:");
+    layout1.add(cusId, 0, 0);
+    cusName = new Label("Customer Name:");
+    layout1.add(cusName, 0, 1);
+    newBal = new Label("Start Balance");
+    layout1.add(newBal, 0, 2);
+    create_button1 = new Button("Create");
+    layout1.add(create_button1, 0, 4);
+    id = new TextField("");
+    id.setPrefWidth(100);
+    name = new TextField("");
+    name.setPrefWidth(100);
+    bal = new TextField("0.0");
+
+    create_button1.setOnAction(new EventHandler<ActionEvent>()
+    {
+      @Override
+      public void handle(ActionEvent event) {
+        double startBal = Double.parseDouble(bal.getText());
+        b1.deposit(startBal);
+        double bank_balance = b1.getBalance();
+        customer_balance.setText("Your balance is " + bank_balance);
+        window.setScene(scene1);
+        String customerName = name.getText();
+        roots.setTop(new Label("Hello " + customerName +
+        " Deposit and Withdraw from your Account"));
+      }
+    }
+    );
+
+    bal.setPrefWidth(100);
+
+    layout1.add(id, 1, 0);
+    layout1.add(name, 1, 1);
+    layout1.add(bal, 1, 2);
+
+    scene2 = new Scene(layout1, 450, 250);
+////////////////////////////////////////////////////////////////////////////////
     // Class referenced from textbook.
     // method for handling "deposit" inputs.
-
-
-
     deposit_button.setOnAction(new EventHandler<ActionEvent>()
     {
       @Override
@@ -76,7 +118,7 @@ public class BankAccountWindow extends Application {
         double deposit_amount = Double.parseDouble(txtDeposit.getText());
         b1.deposit(deposit_amount);
         double bank_balance = b1.getBalance();
-        customer_balance.setText("Your balance is " + bank_balance);
+        customer_balance.setText("Your balance is "+ bank_balance);
       }
     }
     );
@@ -90,14 +132,13 @@ public class BankAccountWindow extends Application {
         double withdraw_amount = Double.parseDouble(txtWithdraw.getText());
         b1.withdraw(withdraw_amount);
         double bank_balance = b1.getBalance();
-        customer_balance.setText("Your balance is " + bank_balance);
+        customer_balance.setText("Your balance is "+ bank_balance);
       }
     }
     );
-
-    Scene sceneBank = new Scene(root, 450, 150);
+    scene1 = new Scene(roots, 450, 250);
+    window.setScene(scene1);
     window.setTitle("Group3 Financial Bank");
-    window.setScene(sceneBank);
     window.show();
 
   }
