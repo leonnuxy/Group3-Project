@@ -1,53 +1,87 @@
 import java.util.*;
+import java.lang.*;
 
 /** This class is the player itself, it is responsible for the changing portion of moving the player */
 public class Avatar_1{
     
-    //setting instance variables
-    private int p_row = 1;
-    private int p_column = 1;
+    final static char avatar_character = 'P';
+    private static int column = 1;
+    private static int row = 2;
+    //private static String direction;
+    private static char [][] direction_game_space = GameSpace.getGameSpace();
+    private static char blank = '.';
+    private final static String UP = "w";
+    private final static String DOWN = "s";
+    private final static String LEFT = "a";
+    private final static String RIGHT = "d";
     
-    /* Handles if the user is trying to move left or right */
-    public int rightLeft(int press_for_ava){
-        int press_ava1 = press_for_ava;
+    public static int LeftRightMovement(String direction){
         
-        if (press_ava1 == 4){
-            p_column = p_column + 1;
+        if (direction.equals(LEFT)){
+            column = column - 1;
         }
-        
-        else if (press_ava1 == 1){
-            p_column = p_column - 1;
+        else if (direction.equals(RIGHT)){
+            column = column + 1;
         }
-        
         else {
-            p_column = p_column;
+            column = column;
         }
         
-        return p_column;
+        return column;
     }
     
-    /* handles if the user is trying to move up or down */
-    public int upDown(int press_for_ava){
-        int press_ava2 = press_for_ava;
+    public static int UpDownMovement(String direction){
         
-        if (press_ava2 == 2){
-            p_row = p_row - 1;
+        if (direction.equals(UP)){
+            row = row - 1;
+        }
+        else if (direction.equals(DOWN)){
+            row = row + 1;
+        }
+        else {
+            row = row;
         }
         
-        else if (press_ava2 == 3) {
-            p_row = p_row + 1;
+        return row;
+    }
+    
+    public static void PlacePython() {
+        String which_press = UserInput.getPress();
+        if (direction_game_space[row][column] != 'x'){
+            if (which_press.equals(RIGHT)){
+                direction_game_space[row][column - 1] = blank;
+                //System.out.println("made it to replacing after right");
+            }
+            else if (which_press.equals(DOWN)){
+                direction_game_space[row - 1][column] = blank;
+                //System.out.println("made it to replacing after down");
+            }
+            else if (which_press.equals(UP)){
+                direction_game_space[row + 1][column] = blank;
+                //System.out.println("made it to replacing after up");
+            }
+            else if (which_press.equals(LEFT)){
+                direction_game_space[row][column + 1] = blank;
+                //System.out.println("made it to replacing after left");
+            }
+            direction_game_space[row][column] = avatar_character;
         }
         
-        return p_row;
-        
+        //end the game if the user tries to occupy an obstacle position.
+        else if (direction_game_space[row][column] == 'x') {
+            System.out.println("You cannot move there, a wall is blocking your way! You have died! If you would like to play again, please run the program again.");
+            System.exit(0);
+        }
+        GameSpace.setGameSpace(direction_game_space);
     }
     
-    public  int getPColumn(){
-        return p_column;
+    public static void newScore() {
+        if (direction_game_space[row][column] == 'c') {
+            int new_score = GameSpace.getScore();
+            new_score++;
+            GameSpace.setScore(new_score);
+            
+        }
     }
-    
-    public  int getPRow(){
-        return p_row;
-    }
-    
+
 }
