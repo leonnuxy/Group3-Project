@@ -14,8 +14,7 @@ import javafx.event.EventHandler;
 // Some Classes in this Porgram were gotten from the textbook and are identified below.
 // Creates the class for with the application is named.
 public class BankAccountWindow extends Application {
-  String customerName = "";
-  String customerId = "";
+  int customerId = 0;
   double startBal = 0.0;
   Button create_button1;
   Label cusId, cusName, newBal;
@@ -89,20 +88,22 @@ public class BankAccountWindow extends Application {
     {
       @Override
       public void handle(ActionEvent event) {
-        double deposit_amount = Double.parseDouble(bal.getText());
-        b1.deposit(deposit_amount);
+        double startBal = Double.parseDouble(bal.getText());
+        b1.deposit(startBal);
         double bank_balance = b1.getBalance();
         customer_balance.setText("Your balance is " + bank_balance);
         window.setScene(scene1);
         String customerName = name.getText();
         roots.setTop(new Label("Hello " + customerName +
         " Deposit and Withdraw from your Account"));
+        int customerId = Integer.parseInt(id.getText());
+        Customer customerInfo = new Customer(customerName,customerId);
+        BankAccount c = new BankAccount(customerInfo,startBal);
       }
     }
     );
 
     bal.setPrefWidth(100);
-
     layout1.add(id, 1, 0);
     layout1.add(name, 1, 1);
     layout1.add(bal, 1, 2);
