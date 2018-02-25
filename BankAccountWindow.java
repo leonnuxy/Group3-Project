@@ -89,8 +89,8 @@ public class BankAccountWindow extends Application {
     {
       @Override
       public void handle(ActionEvent event) {
-        double startBal = Double.parseDouble(bal.getText());
-        b1.deposit(startBal);
+        double deposit_amount = Double.parseDouble(bal.getText());
+        b1.deposit(deposit_amount);
         double bank_balance = b1.getBalance();
         customer_balance.setText("Your balance is " + bank_balance);
         window.setScene(scene1);
