@@ -7,9 +7,7 @@ public class BankAccount {
     Customer c;
 
     /* This is a default constructor */
-    public BankAccount(Customer customer){
-      this.c = customer;
-    }
+    public BankAccount(){}
 
     /* This method creates a constructor that takes the values for a customer and a new balance for the bank account */
     public BankAccount(Customer aCustomer, double balance){
@@ -28,6 +26,9 @@ public class BankAccount {
         c = someCustomer;
     }
 
+    public void setBalance(double balance){
+      this.balance = balance;
+    }
     /* This method checks that the deposited amount is greater than 0 and adds to their total balance */
     public void deposit(double deposit_amount) {
         if (deposit_amount >= 0){
