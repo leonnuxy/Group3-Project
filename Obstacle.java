@@ -9,39 +9,40 @@ int obsHeight;
 
 Random rand = new Random();
 
-//This constructor allows the obstacle size to be set to 0(eraser) and therefore disappear. 
-public Obstacle(int eraser){
-	this.obsXPos = eraser;
-	this.obsYPos = eraser;
-	this.obsWidth = eraser;
-	this.obsHeight = eraser;
+//This constructor allows the creation of a border;
+public Obstacle(int borX, int borY, int borW, int borH){
+	this.obsXPos = borX;
+	this.obsYPos = borY;
+	this.obsWidth = borW;
+	this.obsHeight = borH;
 }
 
-public int setXPos(){
+public int setXPos(int eraseX){
 	obsXPos = rand.nextInt(50) + 1;
 	return obsXPos;
 }
 
-public int setYPos(){
+public int setYPos(int eraseY){
 	obsYPos = rand.nextInt(50) + 1;
 	return obsYPos;
 }
 
-public int setWidth(){
+public int setWidth(int eraseW){
 	obsWidth = rand.nextInt(30) + 1;
 	return obsWidth;
 }
 
-public int setHeight(){
+public int setHeight(int eraseH){
 	obsHeight = rand.nextInt(30) + 1;
 	return obsHeight;
 }
+
 
 
 //implementation using graphicscontext in the field: 
 //Obstacle obs1 = new Obstacle();
 //strokeRect(obs1.setYPos(),obs1.setYPos(), obs1.setWidth(), obs1.setHeight());
 //Collectible will work the same but with fixed height and width.
-//I'll make a separate class for the border  
+
 
 }
