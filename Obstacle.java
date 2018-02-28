@@ -4,7 +4,7 @@ public class Obstacle {
 
 int obsXPos;
 int obsYPos;
-int	obsWidth;
+int obsWidth;
 int obsHeight;
 
 Random rand = new Random();
