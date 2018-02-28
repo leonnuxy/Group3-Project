@@ -5,7 +5,7 @@ public class Obstacle {
 
 int obsXPos, xDefine;
 int obsYPos, yDefine;
-int	obsWidth;
+int obsWidth;
 int obsHeight;
 
 Random rand = new Random();
