@@ -15,7 +15,7 @@ public class Window3 extends Application{
     double rectX=0;
     double rectY=0;
     
-    
+    //Starts the window
     public void start(Stage primaryStage){
         Group space = new Group();
         Scene scene=new Scene(play(), 600,600);
@@ -23,6 +23,7 @@ public class Window3 extends Application{
         primaryStage.show();
     }
     
+    //Produces the shape to move and the controls
     public Group play(){
         Group space = new Group();
         
@@ -57,7 +58,8 @@ public class Window3 extends Application{
                 U=false;
             }
         });
-        //Animation
+        
+        //Animates the movement
         AnimationTimer animate=new AnimationTimer(){
             public void handle(long arg0) {
                 if(R){
@@ -83,6 +85,7 @@ public class Window3 extends Application{
         
         return space;
     }
+    
     public static void main(String[] args){
         launch(args);
         Obstacle2 obstacle = new Obstacle2(0, 0, 10, 10);
