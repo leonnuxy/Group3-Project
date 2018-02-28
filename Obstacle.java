@@ -19,22 +19,22 @@ public Obstacle(int borX, int borY, int borW, int borH){
 }
 
 public int setXPos(){
-	obsXPos = rand.nextInt(300) + 1;
+	obsXPos = rand.nextInt(300) + 0;
 	return obsXPos;
 }
 
 public int setYPos(){
-	obsYPos = rand.nextInt(300) + 1;
+	obsYPos = rand.nextInt(300) + 0;
 	return obsYPos;
 }
 
 public int setWidth(){
-	obsWidth = rand.nextInt(50) + 1;		
+	obsWidth = rand.nextInt(50) + 10;		
 	return obsWidth;
 }
 
 public int setHeight(){
-	obsHeight = rand.nextInt(50) + 1;	
+	obsHeight = rand.nextInt(50) + 10;	
 	return obsHeight;
 }
 
