@@ -22,7 +22,7 @@ public class Window3 extends Application{
   boolean check = true;
 
   Group space = new Group();
-  Obstacle obs = new Obstacle();
+  //Obstacle obs = new Obstacle();
   Border bor = new Border();
 
   Avatar ava = new Avatar();
@@ -49,7 +49,7 @@ public class Window3 extends Application{
     space.getChildren().add(bor.upBorder());
     space.getChildren().add(player);
 
-    space.getChildren().add(obs.obsWindow);
+    //space.getChildren().add(obs.obsWindow);
     space.getChildren().add(controls);
     controls.setOnKeyPressed(e->{
 
@@ -85,6 +85,7 @@ public class Window3 extends Application{
     //Animates the movement
     AnimationTimer animate=new AnimationTimer(){
       int score = 0;
+      Collectible col = new Collectible();
       Label label_score;
       //int score = 0;
       public void handle(long arg0) {
@@ -112,8 +113,8 @@ public class Window3 extends Application{
 
         }
 
-        if ((player.getBoundsInParent().intersects(obs.obsXPos, obs.obsYPos, obs.obsWidth, obs.obsHeight))||
-        (player.getBoundsInParent().intersects(bor.borLXPos, bor.borLYPos, bor.borLWidth, bor.borLHeight))||
+        if //((player.getBoundsInParent().intersects(obs.obsXPos, obs.obsYPos, obs.obsWidth, obs.obsHeight))||
+        ((player.getBoundsInParent().intersects(bor.borLXPos, bor.borLYPos, bor.borLWidth, bor.borLHeight))||
         (player.getBoundsInParent().intersects(bor.borRXPos, bor.borRYPos, bor.borRWidth, bor.borRHeight)) ||
         (player.getBoundsInParent().intersects(bor.borUXPos, bor.borUYPos, bor.borUWidth, bor.borUHeight)) ||
         (player.getBoundsInParent().intersects(bor.borDXPos, bor.borDYPos, bor.borDWidth, bor.borDHeight))){
@@ -126,8 +127,8 @@ public class Window3 extends Application{
           //Rectangle collect2 = createCollect();
           //createCollect();
 
-          collect2.setTranslateX(rand.nextInt(479) + 1);
-          collect2.setTranslateY(rand.nextInt(479) + 1);
+          collect2.setTranslateX(rand.nextInt((500 - col.xPos2())/2) + 1);
+          collect2.setTranslateY(rand.nextInt((500 - col.xPos2())/2) + 1);
           collect2.getBoundsInParent();
           //collect2 = createCollect();
           score++;
