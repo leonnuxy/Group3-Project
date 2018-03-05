@@ -1,5 +1,8 @@
 import javafx.scene.shape.Rectangle;
 
+/**
+Creates a border around the outside edge of the game window, can be called and used in a 500 by 500 window
+*/
 public class Border_Jon {
   double borLXPos = 0.0;
   double borLYPos = 0.0;
@@ -26,24 +29,28 @@ public class Border_Jon {
   Rectangle borDown;
   Rectangle borRight;
 
+  /* Draws the border for the left side of the window */
   public Rectangle leftBorder(){
     borLeft = new Rectangle(borLXPos, borLYPos, borLWidth, borLHeight);
     return borLeft;
 
   }
-
+  
+  /* Draws the border for the right side of the window */
   public Rectangle rightBorder(){
     borRight = new Rectangle(borRXPos, borRYPos, borRWidth, borRHeight);
     return borRight;
 
   }
-
+  
+  /* Draws the border for the bottom of the window */
   public Rectangle downBorder(){
     borDown = new Rectangle(borDXPos, borDYPos, borDWidth, borDHeight);
     return borDown;
 
   }
 
+  /* Draws the border for the top of the window */
   public Rectangle upBorder(){
     borUp = new Rectangle(borUXPos, borUYPos, borUWidth, borUHeight);
     return borUp;
