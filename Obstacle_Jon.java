@@ -2,7 +2,9 @@ import java.util.Random;
 
 import javafx.scene.shape.Rectangle;
 
-/** This class creates an Obstacle optimized for a 500 by 500 field*/
+/** 
+This class creates an Obstacle optimized for a 500 by 500 field
+*/
 public class Obstacle_Jon {
   int obsXPos, xDefine;
   int obsYPos, yDefine;
@@ -11,7 +13,8 @@ public class Obstacle_Jon {
   Rectangle obsWindow;
 
   Random rand = new Random();
-
+  
+  /*Constructor */
   public Obstacle_Jon(){
     this.obsXPos = this.setXPos();
     this.obsYPos = this.setYPos();
@@ -21,7 +24,7 @@ public class Obstacle_Jon {
   
   }
 
-  //This constructor allows the creation of a obstacle with custom shape(for borders);
+  /* Constructor that allows the creation of an obstacle with a custom shape */
   public Obstacle_Jon(int borX, int borY, int borW, int borH){
     this.obsXPos = borX;
     this.obsYPos = borY;
@@ -30,15 +33,8 @@ public class Obstacle_Jon {
   
   }
 
-
-
-
-
-
-
-  //Define variables choose a random section(1-5) of the field to place object
-
-  //10 pix of section are given to where potential collectibles will be place
+  /*Define variables choose a random section(1-5) of the field to place object
+    10 pix of section are given to where potential collectibles will be placed for the x-coordinate*/
 
   public int setXPos(){
     xDefine = rand.nextInt(5) + 1;
@@ -67,6 +63,8 @@ public class Obstacle_Jon {
   }
 
 
+/*Define variables choose a random section(1-5) of the field to place object
+    10 pix of section are given to where potential collectibles will be placed for the y-coordinate*/
 
   public int setYPos(){
 
@@ -97,7 +95,7 @@ public class Obstacle_Jon {
   }
 
 
-
+  /* Change the width of the obstacle(s) */
   public int setWidth(){
     obsWidth = rand.nextInt(30) + 15;
     return obsWidth;
@@ -105,7 +103,7 @@ public class Obstacle_Jon {
   }
 
 
-
+  /* Change the height of the obstacle(s) */
   public int setHeight(){
     obsHeight = rand.nextInt(30) + 15;
     return obsHeight;
