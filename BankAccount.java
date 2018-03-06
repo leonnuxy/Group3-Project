@@ -1,56 +1,59 @@
 /** This class checks that a deposit is not negative and that any withdrawl does not exceed a pre set overdraft. This class can be called externally for use in checking fund transfer information */
 public class BankAccount {
-
+    
     // Global variables set to the default values.
-    double balance;
-    double overdraftAmount = 100.0;
-    Customer c;
-
+    double balance = 0;
+    Customer accountHolder;
+    // ChequingAccount account = new ChequingAccount();
+    //double overdraftAmount = account.getOverdraftAmount();
     /* This is a default constructor */
     public BankAccount(){}
-
+    
     /* This method creates a constructor that takes the values for a customer and a new balance for the bank account */
-    public BankAccount(Customer aCustomer, double balance){
-        this.balance = balance;
-        this.c = aCustomer;
-
+    public BankAccount(Customer accountHolder, double startBalance){
+        balance = startBalance;
+        this.accountHolder = accountHolder;
     }
-
-    /* This method is a getter that returns the customer information */
-    public Customer getCustomer() {
-        return c;
-    }
-
-    /* This method is a setter that sets the name of the customer */
+    
     public void  setCustomer(Customer someCustomer){
-        c = someCustomer;
+        accountHolder = someCustomer;
     }
-
-    public void setBalance(double balance){
-      this.balance = balance;
+    
+    public void setBalance(double amount){
+        if (amount <= 0){
+            balance = amount;
+        }
     }
     /* This method checks that the deposited amount is greater than 0 and adds to their total balance */
-    public void deposit(double deposit_amount) {
-        if (deposit_amount >= 0){
-            balance = balance + deposit_amount;
+    public void deposit(double amount) {
+        if (amount > 0){
+            balance = balance + amount;
+        }
+        else{
+            //System.out.println("Neg");
         }
     }
-
+    
     /* This method ensures that the user is not withdrawing more than their specified overdraft amount and calculates their total balance.*/
-    public void withdraw(double withdraw_amount) {
-        if (withdraw_amount - balance < overdraftAmount) {
-            balance = balance - withdraw_amount;
+    public void withdraw(double amount) {
+        if (amount <= balance){
+            balance = balance - amount;
         }
     }
-
+    
+    public Customer getCustomer() {
+        return accountHolder;
+    }
+    
+    public void transfer(double amount, BankAccount toAccount){
+        if (balance >= amount){
+            withdraw(amount);
+            toAccount.deposit(amount);
+        }
+    }
+    
     /* This getter method returns the balance */
     public double getBalance() {
         return balance;
-    }
-
-    /* This setter method allows the overdraft amount to be specified externally and returns the overdraftAmount after its assigned to the instance variable.*/
-    public double setOverdraftAmount(double amount) {
-        overdraftAmount = amount;
-        return overdraftAmount;
     }
 }
