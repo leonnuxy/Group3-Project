@@ -39,9 +39,9 @@ public class ChequingAccount extends BankAccount {
     @Override
     public void withdraw(double amount){
         double adjusted_withdrawl = amount + overdraftFee;
-        if (amount <= balance + overdraftAmount && amount > balance) {
+        if (amount <= (balance + overdraftAmount) && amount > balance) {
             balance = balance - adjusted_withdrawl;
-            setBalance(balance);
+            //setBalance(balance);
         }
         else if (amount >= balance + overdraftAmount) {
             

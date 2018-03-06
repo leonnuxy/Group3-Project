@@ -29,14 +29,11 @@ public class BankAccount {
         if (amount > 0){
             balance = balance + amount;
         }
-        else{
-            //System.out.println("Neg");
-        }
     }
     
     /* This method ensures that the user is not withdrawing more than their specified overdraft amount and calculates their total balance.*/
     public void withdraw(double amount) {
-        if (amount <= balance){
+        if (balance >= amount){
             balance = balance - amount;
         }
     }
@@ -45,9 +42,11 @@ public class BankAccount {
         return accountHolder;
     }
     
+    /* This method transfers money from one account to a specified account */
     public void transfer(double amount, BankAccount toAccount){
-        if (balance >= amount){
-            withdraw(amount);
+        double balance_check = balance;
+        withdraw(amount);
+        if (balance_check != balance){
             toAccount.deposit(amount);
         }
     }
