@@ -2,46 +2,49 @@
 individuals and relating them to a BankAccount */
 public class Customer{
 
-  //public Customer(){}
-  // Global variables set to default values.
-  String name;
-  int id;
+    // Global variables set to default values.
+    private String name;
+    private int customerID;
 
-  /* This is a constructor that can set a new name and customer ID */
-  public Customer(String name, int id){
-    this.name = name;
-    this.id = id;
-  }
+    /* This is a default constructor */
+    public Customer(){}
 
-  public Customer(Customer oldCustomer){
-    name = oldCustomer.name;
-    id = oldCustomer.id;
-  }
-
-  public String getName(){
-    return name;
-  }
-
-  public int getID(){
-    return id;
-  }
-
-  public void setName(String newName){
-    if (name instanceof String){
-      name = newName;
+    /* This is a constructor that can set a new name and customer ID */
+    public Customer(String name, int customerID){
+        this.name = name;
+        this.customerID = customerID;
     }
-  }
 
-  public void setId(int iD){
-    if (id == (int)id) {
-      id = iD;
+    
+    public Customer(Customer something){
+        name = something.name;
+        customerID = something.customerID;
     }
-  }
 
-  public String toString(){
-    String iD = Integer.toString(id);
-    String name_id = name + " " + iD;
-    return name_id;
-  }
+    public String getName(){
+        return name;
+    }
+
+    public int getID(){
+        return customerID;
+    }
+
+    public void setName(String validName){
+        if (name instanceof String){
+            name = validName;
+        }
+    }
+
+    public void setId(int validId){
+        if (customerID == (int)customerID) {
+            customerID = validId;
+        }
+    }
+
+    public String toString(){
+        String id = Integer.toString(customerID);
+        String name_id = name + " " + id;
+        return name_id;
+    }
 
 }
