@@ -28,6 +28,7 @@ public class BankAccountApp extends Application {
 	Button deposit_button_sav;
 	Button submit_sav_acc;
 	Button submit_chq_acc;
+	Button save;
 	TextField txtWithdrawChq, txtDepositChq, txtWithdrawSav, txtDepositSav, txtNameChq, txtNameSav;
 	Label customer_ID_label, customer_name_label_sav, customer_name_label_chq;
 	Label customer_balance_chq, customer_balance_sav, error_chq, error_sav;
@@ -119,6 +120,7 @@ public class BankAccountApp extends Application {
 	    layout5.add(customer_balance_sav, 1, 3);
 	    layout5.add(error_sav, 1, 4);
 	    
+	    //Button to create savings account
 	    create_sav_acc.setOnAction(new EventHandler<ActionEvent>()
 	    {
 	      @Override
@@ -129,7 +131,7 @@ public class BankAccountApp extends Application {
 	    }
 	    );
 	    
-	    
+	    //Button to create chequing account
 	    create_chq_acc.setOnAction(new EventHandler<ActionEvent>()
 	    {
 	      @Override
@@ -140,6 +142,7 @@ public class BankAccountApp extends Application {
 	    }
 	    );
 	    
+	    //Submit chequing account creation
 	    submit_chq_acc.setOnAction(new EventHandler<ActionEvent>()
 	    {
 	      @Override
@@ -154,6 +157,7 @@ public class BankAccountApp extends Application {
 	    }
 	    );
 	    
+	    //Submit saving account creation
 	    submit_sav_acc.setOnAction(new EventHandler<ActionEvent>()
 	    {
 	      @Override
@@ -168,7 +172,7 @@ public class BankAccountApp extends Application {
 	    }
 	    );
 	    
-	    //Uses layout4
+	    //Uses layout4 to create a screen for withdrawing in the chequing account
 	    withdraw_button_chq.setOnAction(new EventHandler<ActionEvent>()
 	    {
 	      @Override
@@ -188,7 +192,7 @@ public class BankAccountApp extends Application {
 	    }
 	    );
 	    
-	    //Uses layout5
+	    //Uses layout5 to create a screen for withdrawing in the chequing account
 	    deposit_button_chq.setOnAction(new EventHandler<ActionEvent>()
 	    {
 	      @Override
@@ -208,7 +212,7 @@ public class BankAccountApp extends Application {
 	    }
 	    );
 	    
-	    
+	    //Uses layout4 to create a screen for withdrawing in the chequing account
 		withdraw_button_sav.setOnAction(new EventHandler<ActionEvent>()
 	    {
 	      @Override
@@ -228,6 +232,7 @@ public class BankAccountApp extends Application {
 	    }
 	    );
 	    
+		//Uses layout5 to create a screen for withdrawing in the chequing account
 	    deposit_button_sav.setOnAction(new EventHandler<ActionEvent>()
 	    {
 	      @Override
@@ -252,7 +257,6 @@ public class BankAccountApp extends Application {
 	    primaryStage.setTitle("Group3 Financial Bank");
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
-	    
 	}
 	
 }
