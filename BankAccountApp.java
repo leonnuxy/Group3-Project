@@ -1,5 +1,4 @@
 import java.util.Random;
-
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -18,6 +17,7 @@ public class BankAccountApp extends Application {
 	//This will be the file handling app
 	////BankInterface bi = new BankInterface();
 	//instance variables
+	//String cust_name;
 	SavingsAccount s1 = new SavingsAccount();
 	ChequingAccount ca1 = new ChequingAccount();
 	Button create_chq_acc;
@@ -28,9 +28,9 @@ public class BankAccountApp extends Application {
 	Button deposit_button_sav;
 	Button submit_sav_acc;
 	Button submit_chq_acc;
-	TextField txtWithdrawChq, txtDepositChq, txtWithdrawSav, txtDepositSav, txtName;
-	Label customer_ID_label;
-	Label customer_balance_chq, customer_balance_sav;
+	TextField txtWithdrawChq, txtDepositChq, txtWithdrawSav, txtDepositSav, txtNameChq, txtNameSav;
+	Label customer_ID_label, customer_name_label_sav, customer_name_label_chq;
+	Label customer_balance_chq, customer_balance_sav, error_chq, error_sav;
 	int customer_ID;
 	Random rand = new Random();
 	
@@ -55,10 +55,10 @@ public class BankAccountApp extends Application {
 	    layout2.setHgap(5);
 	    customer_ID = rand.nextInt(9999 - 1000 + 1) + 1000;
 	    customer_ID_label = new Label("Customer ID is: " + customer_ID);
-	    txtName = new TextField("Enter name here");
+	    txtNameSav = new TextField("Enter name here");
 	    submit_sav_acc = new Button("Sumbit");
 	    layout2.add(customer_ID_label, 0, 0);
-	    layout2.add(txtName, 0, 1);
+	    layout2.add(txtNameSav, 0, 1);
 	    layout2.add(submit_sav_acc, 0, 2);
 	    
 	    //Chequing Account Creation
@@ -67,10 +67,10 @@ public class BankAccountApp extends Application {
 	    layout3.setHgap(5);
 	    customer_ID = rand.nextInt(9999 - 1000 + 1) + 1000;
 	    customer_ID_label = new Label("Customer ID is: " + customer_ID);
-	    txtName = new TextField("Enter name here");
+	    txtNameChq = new TextField("Enter name here");
 	    submit_chq_acc = new Button("Sumbit");
 	    layout3.add(customer_ID_label, 0, 0);
-	    layout3.add(txtName, 0, 1);
+	    layout3.add(txtNameChq, 0, 1);
 	    layout3.add(submit_chq_acc, 0, 2);
 	    
 	    //Chequing Account Information and Deposit + Withdraw
@@ -81,16 +81,20 @@ public class BankAccountApp extends Application {
 	    customer_balance_chq = new Label("");
 	    customer_balance_chq.setText("Your balance is " + bank_balance_chq);
 	    withdraw_button_chq = new Button("Withdraw");
-	    layout4.add(withdraw_button_chq, 0, 0);
+	    layout4.add(withdraw_button_chq, 0, 1);
 	    deposit_button_chq = new Button("Deposit");
-	    layout4.add(deposit_button_chq, 0, 1);
+	    layout4.add(deposit_button_chq, 0,2);
 	    txtWithdrawChq = new TextField("0");
 	    txtWithdrawChq.setPrefWidth(100);
 	    txtDepositChq = new TextField("0");
 	    txtDepositChq.setPrefWidth(100);
-	    layout4.add(txtWithdrawChq, 1, 0);
-	    layout4.add(txtDepositChq, 1, 1);
-	    layout4.add(customer_balance_chq, 2, 0);
+	    error_chq = new Label("");
+	    customer_name_label_chq = new Label("");
+	    layout4.add(customer_name_label_chq, 0, 0);
+	    layout4.add(txtWithdrawChq, 1, 1);
+	    layout4.add(txtDepositChq, 1, 2);
+	    layout4.add(customer_balance_chq, 1, 3);
+	    layout4.add(error_chq, 1, 4);
 	    
 	    //Savings Account Information and Deposit + Withdraw
 	    GridPane layout5 = new GridPane();
@@ -100,16 +104,20 @@ public class BankAccountApp extends Application {
 	    customer_balance_sav = new Label("");
 	    customer_balance_sav.setText("Your balance is " + bank_balance_sav);
 	    withdraw_button_sav = new Button("Withdraw");
-	    layout5.add(withdraw_button_sav, 0, 0);
+	    layout5.add(withdraw_button_sav, 0, 1);
 	    deposit_button_sav = new Button("Deposit");
-	    layout5.add(deposit_button_sav, 0, 1);
+	    layout5.add(deposit_button_sav, 0, 2);
 	    txtWithdrawSav = new TextField("0");
 	    txtWithdrawSav.setPrefWidth(100);
 	    txtDepositSav = new TextField("0");
 	    txtDepositSav.setPrefWidth(100);
-	    layout5.add(txtWithdrawSav, 1, 0);
-	    layout5.add(txtDepositSav, 1, 1);
-	    layout5.add(customer_balance_sav, 2, 0);
+	    error_sav = new Label("");
+	    customer_name_label_sav = new Label("");
+	    layout5.add(customer_name_label_sav, 0, 0);
+	    layout5.add(txtWithdrawSav, 1, 1);
+	    layout5.add(txtDepositSav, 1, 2);
+	    layout5.add(customer_balance_sav, 1, 3);
+	    layout5.add(error_sav, 1, 4);
 	    
 	    create_sav_acc.setOnAction(new EventHandler<ActionEvent>()
 	    {
@@ -121,17 +129,6 @@ public class BankAccountApp extends Application {
 	    }
 	    );
 	    
-	    submit_sav_acc.setOnAction(new EventHandler<ActionEvent>()
-	    {
-	      @Override
-	      public void handle(ActionEvent event) {
-	    	  	String cust_name = txtName.getText();
-	    	  	Customer c1 = new Customer(cust_name, customer_ID);
-	    	  	s1.setCustomer(c1);
-	    	  	//System.out.println(s1);
-	      }
-	    }
-	    );
 	    
 	    create_chq_acc.setOnAction(new EventHandler<ActionEvent>()
 	    {
@@ -147,12 +144,12 @@ public class BankAccountApp extends Application {
 	    {
 	      @Override
 	      public void handle(ActionEvent event) {
-	    	  	String cust_name = txtName.getText();
-	    	  	Customer c2 = new Customer(cust_name, customer_ID);
+	    	  	String cust_name_chq = txtNameChq.getText();
+	    	  	Customer c2 = new Customer(cust_name_chq, customer_ID);
+	    	  	customer_name_label_chq.setText("Hello " + c2.getName() + " " + c2.getID());
 	    	  	ca1.setCustomer(c2);
 	    	  	Scene scene4 = new Scene(layout4, 400, 400);
 	    	  	primaryStage.setScene(scene4);
-	    	  	//System.out.println(ca1);
 	      }
 	    }
 	    );
@@ -161,51 +158,72 @@ public class BankAccountApp extends Application {
 	    {
 	      @Override
 	      public void handle(ActionEvent event) {
-	    	  	String cust_name = txtName.getText();
-	    	  	Customer c1 = new Customer(cust_name, customer_ID);
+	    	  	String cust_name_sav = txtNameSav.getText();
+	    	  	Customer c1 = new Customer(cust_name_sav, customer_ID);
+	    	  	customer_name_label_sav.setText("Hello " + c1.getName() + " " + c1.getID());
 	    	  	s1.setCustomer(c1);
 	    	  	Scene scene5 = new Scene(layout5, 400, 400);
 	    	  	primaryStage.setScene(scene5);
-	    	  	//System.out.println(ca1);
 	      }
 	    }
 	    );
 	    
+	    //Uses layout4
 	    withdraw_button_chq.setOnAction(new EventHandler<ActionEvent>()
 	    {
 	      @Override
 	      public void handle(ActionEvent event) {
-	    	  	  double withdraw_amount_chq = Double.parseDouble(txtWithdrawChq.getText());
-	          ca1.withdraw(withdraw_amount_chq);
-	          double bank_balance_chq = ca1.getBalance();
-	          customer_balance_chq.setText("Your balance is "+ bank_balance_chq);
-	    	  	  //System.out.println(ca1);
+	    	  	  try {
+		    	  	  double withdraw_amount_chq = Double.parseDouble(txtWithdrawChq.getText());
+		          ca1.withdraw(withdraw_amount_chq);
+		          double bank_balance_chq = ca1.getBalance();
+		          customer_balance_chq.setText("Your balance is "+ bank_balance_chq);
+		    	  	  //System.out.println(ca1);
+		          error_chq.setText("");
+	    	  	  }
+	    	  	  catch (NumberFormatException e) {
+	    	  		  error_chq.setText("Error, you must input a number. ");
+	    	  	  }
 	      }
 	    }
 	    );
 	    
+	    //Uses layout5
 	    deposit_button_chq.setOnAction(new EventHandler<ActionEvent>()
 	    {
 	      @Override
 	      public void handle(ActionEvent event) {
-	    	  	  double deposit_amount_chq = Double.parseDouble(txtDepositChq.getText());
-	          ca1.deposit(deposit_amount_chq);
-	          double bank_balance_chq = ca1.getBalance();
-	          customer_balance_chq.setText("Your balance is "+ bank_balance_chq);
-	    	  	  //System.out.println(ca1);
+	    	  	  try {
+		    	  	  double deposit_amount_chq = Double.parseDouble(txtDepositChq.getText());
+		          ca1.deposit(deposit_amount_chq);
+		          double bank_balance_chq = ca1.getBalance();
+		          customer_balance_chq.setText("Your balance is "+ bank_balance_chq);
+		          error_chq.setText("");
+		    	  	  //System.out.println(ca1);
+	    	  	  }
+	    	  	  catch (NumberFormatException e) {
+	    	  		  error_chq.setText("Error, you must input a number. ");
+	    	  	  }
 	      }
 	    }
 	    );
+	    
 	    
 		withdraw_button_sav.setOnAction(new EventHandler<ActionEvent>()
 	    {
 	      @Override
 	      public void handle(ActionEvent event) {
-	    	  	  double withdraw_amount_sav = Double.parseDouble(txtWithdrawSav.getText());
-	          s1.withdraw(withdraw_amount_sav);
-	          double bank_balance_sav = s1.getBalance();
-	          customer_balance_sav.setText("Your balance is "+ bank_balance_sav);
-	    	  	  System.out.println(s1);
+	    	      try {
+		    	  	  double withdraw_amount_sav = Double.parseDouble(txtWithdrawSav.getText());
+		          s1.withdraw(withdraw_amount_sav);
+		          double bank_balance_sav = s1.getBalance();
+		          customer_balance_sav.setText("Your balance is "+ bank_balance_sav);
+		          error_sav.setText("");
+		    	  	  System.out.println(s1);
+	    	      }
+	    	      catch (NumberFormatException e) {
+	    	    	  	  error_sav.setText("Error, you must input a number. ");
+	    	      }
 	      }
 	    }
 	    );
@@ -214,11 +232,17 @@ public class BankAccountApp extends Application {
 	    {
 	      @Override
 	      public void handle(ActionEvent event) {
-	    	  	  double deposit_amount_sav = Double.parseDouble(txtDepositSav.getText());
-	          s1.deposit(deposit_amount_sav);
-	          double bank_balance_sav = s1.getBalance();
-	          customer_balance_sav.setText("Your balance is "+ bank_balance_sav);
-	    	  	  System.out.println(s1);
+	    	      try {
+		    	  	  double deposit_amount_sav = Double.parseDouble(txtDepositSav.getText());
+		          s1.deposit(deposit_amount_sav);
+		          double bank_balance_sav = s1.getBalance();
+		          customer_balance_sav.setText("Your balance is "+ bank_balance_sav);
+		          error_sav.setText("");
+		    	  	  System.out.println(s1);
+	    	      }
+	    	      catch (NumberFormatException e) {
+	    	    	  	  error_sav.setText("Error, you must input a number. ");
+	    	      }
 	      }
 	    }
 	    );

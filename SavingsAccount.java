@@ -26,17 +26,17 @@ public class SavingsAccount extends BankAccount {
 
 	public double getMonthlyFeesAndInterest() {
 		double the_balance = getBalance();
-    double the_annualInterestRate = getAnnualInterestRate();
-    double adujstedAnnualInterestRate = the_annualInterestRate / 12;
-    int monthlyFee = 5;
+		double the_annualInterestRate = getAnnualInterestRate();
+		double adujstedAnnualInterestRate = the_annualInterestRate / 12;
+		int monthlyFee = 5;
 		double percentile = the_balance*(annualInterestRate/100);
-    if (the_balance < 1000.0){
-      the_annualInterestRate = adujstedAnnualInterestRate - monthlyFee;
-    }
-    else if (the_balance >= 1000.0) {
-      the_annualInterestRate = percentile/12;
-    }
-    return the_annualInterestRate;
+		if (the_balance < 1000.0){
+			the_annualInterestRate = adujstedAnnualInterestRate - monthlyFee;
+		}
+		else if (the_balance >= 1000.0) {
+			the_annualInterestRate = percentile/12;
+		}
+		return the_annualInterestRate;
 	}
 
 }
