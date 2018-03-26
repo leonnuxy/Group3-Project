@@ -7,7 +7,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBase;
 import javafx.scene.control.TextField;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
@@ -29,7 +28,7 @@ public class BankAccountApp extends Application {
 	Button deposit_button_sav;
 	Button submit_sav_acc;
 	Button submit_chq_acc;
-	TextField txtWithdraw, txtDeposit, txtName;
+	TextField txtWithdrawChq, txtDepositChq, txtWithdrawSav, txtDepositSav, txtName;
 	Label customer_ID_label;
 	Label customer_balance_chq, customer_balance_sav;
 	int customer_ID;
@@ -85,15 +84,15 @@ public class BankAccountApp extends Application {
 	    layout4.add(withdraw_button_chq, 0, 0);
 	    deposit_button_chq = new Button("Deposit");
 	    layout4.add(deposit_button_chq, 0, 1);
-	    txtWithdraw = new TextField("0");
-	    txtWithdraw.setPrefWidth(100);
-	    txtDeposit = new TextField("0");
-	    txtDeposit.setPrefWidth(100);
-	    layout4.add(txtWithdraw, 1, 0);
-	    layout4.add(txtDeposit, 1, 1);
+	    txtWithdrawChq = new TextField("0");
+	    txtWithdrawChq.setPrefWidth(100);
+	    txtDepositChq = new TextField("0");
+	    txtDepositChq.setPrefWidth(100);
+	    layout4.add(txtWithdrawChq, 1, 0);
+	    layout4.add(txtDepositChq, 1, 1);
 	    layout4.add(customer_balance_chq, 2, 0);
 	    
-	  //Savings Account Information and Deposit + Withdraw
+	    //Savings Account Information and Deposit + Withdraw
 	    GridPane layout5 = new GridPane();
 	    layout5.setVgap(10);
 	    layout5.setHgap(5);
@@ -104,12 +103,12 @@ public class BankAccountApp extends Application {
 	    layout5.add(withdraw_button_sav, 0, 0);
 	    deposit_button_sav = new Button("Deposit");
 	    layout5.add(deposit_button_sav, 0, 1);
-	    txtWithdraw = new TextField("0");
-	    txtWithdraw.setPrefWidth(100);
-	    txtDeposit = new TextField("0");
-	    txtDeposit.setPrefWidth(100);
-	    layout5.add(txtWithdraw, 1, 0);
-	    layout5.add(txtDeposit, 1, 1);
+	    txtWithdrawSav = new TextField("0");
+	    txtWithdrawSav.setPrefWidth(100);
+	    txtDepositSav = new TextField("0");
+	    txtDepositSav.setPrefWidth(100);
+	    layout5.add(txtWithdrawSav, 1, 0);
+	    layout5.add(txtDepositSav, 1, 1);
 	    layout5.add(customer_balance_sav, 2, 0);
 	    
 	    create_sav_acc.setOnAction(new EventHandler<ActionEvent>()
@@ -176,7 +175,7 @@ public class BankAccountApp extends Application {
 	    {
 	      @Override
 	      public void handle(ActionEvent event) {
-	    	  	  double withdraw_amount_chq = Double.parseDouble(txtWithdraw.getText());
+	    	  	  double withdraw_amount_chq = Double.parseDouble(txtWithdrawChq.getText());
 	          ca1.withdraw(withdraw_amount_chq);
 	          double bank_balance_chq = ca1.getBalance();
 	          customer_balance_chq.setText("Your balance is "+ bank_balance_chq);
@@ -189,7 +188,7 @@ public class BankAccountApp extends Application {
 	    {
 	      @Override
 	      public void handle(ActionEvent event) {
-	    	  	  double deposit_amount_chq = Double.parseDouble(txtDeposit.getText());
+	    	  	  double deposit_amount_chq = Double.parseDouble(txtDepositChq.getText());
 	          ca1.deposit(deposit_amount_chq);
 	          double bank_balance_chq = ca1.getBalance();
 	          customer_balance_chq.setText("Your balance is "+ bank_balance_chq);
@@ -202,7 +201,7 @@ public class BankAccountApp extends Application {
 	    {
 	      @Override
 	      public void handle(ActionEvent event) {
-	    	  	  double withdraw_amount_sav = Double.parseDouble(txtWithdraw.getText());
+	    	  	  double withdraw_amount_sav = Double.parseDouble(txtWithdrawSav.getText());
 	          s1.withdraw(withdraw_amount_sav);
 	          double bank_balance_sav = s1.getBalance();
 	          customer_balance_sav.setText("Your balance is "+ bank_balance_sav);
@@ -215,7 +214,7 @@ public class BankAccountApp extends Application {
 	    {
 	      @Override
 	      public void handle(ActionEvent event) {
-	    	  	  double deposit_amount_sav = Double.parseDouble(txtDeposit.getText());
+	    	  	  double deposit_amount_sav = Double.parseDouble(txtDepositSav.getText());
 	          s1.deposit(deposit_amount_sav);
 	          double bank_balance_sav = s1.getBalance();
 	          customer_balance_sav.setText("Your balance is "+ bank_balance_sav);
