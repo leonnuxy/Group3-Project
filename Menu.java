@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
-
+import javafx.scene.text.Font;
 
 /*
  * Make a simple menu with a start and quit button for the user to use.
@@ -28,8 +28,7 @@ public class Menu extends Application{
 		Pane settingsPane = new Pane();
 		Scene settingsScene = new Scene(settingsPane, 800, 800);
 		
-		
-		//create the buttons for the person to see
+		//create the buttons for menu
 		Button start = new Button("START");
 		Button quit = new Button("QUIT");
 		Button settings = new Button("SETTINGS");
@@ -37,30 +36,38 @@ public class Menu extends Application{
 		
 		//set size and position for the start button
 		start.setLayoutX(225);
-		start.setLayoutY(275);
-		start.setPrefSize(350, 100); 
+		start.setLayoutY(400);
+		start.setPrefSize(350, 75); 
 		
 		//set size and position for the settings button
 		settings.setLayoutX(225);
-		settings.setLayoutY(400);
-		settings.setPrefSize(350, 100);
+		settings.setLayoutY(500);
+		settings.setPrefSize(350, 75);
 
 		//set size and position for the quit button
 		quit.setLayoutX(225);
-		quit.setLayoutY(525);
-		quit.setPrefSize(350, 100);
+		quit.setLayoutY(600);
+		quit.setPrefSize(350, 75);
+		
+		//set size and position for the label
+		welcomeCaption.setLayoutX(75);
+		welcomeCaption.setLayoutY(200);
+		welcomeCaption.setFont(new Font(70));
 		
 		//Refer to javafx CSS for method
-        start.setStyle("-fx-font-size: 4em;-fx-background-color: #00ff00 ");
-		quit.setStyle("-fx-font-size: 4em;-fx-background-color: #00ff00  ");
-		settings.setStyle("-fx-font-size: 4em;-fx-background-color: #00ff00  ");
+        start.setStyle("-fx-font-size: 4em;-fx-background-color: #4682b4 ");
+		quit.setStyle("-fx-font-size: 4em;-fx-background-color: #ffff00  ");
+		settings.setStyle("-fx-font-size: 4em;-fx-background-color: #4682b4  ");
 		
 		menuPane.getChildren().add(start);
 		menuPane.getChildren().add(quit);
 		menuPane.getChildren().add(settings);
+		menuPane.getChildren().add(welcomeCaption);
+		
 		
 		primaryStage.setScene(menuScene);
 		primaryStage.show();
+		
 		
 		//actions for the quit button
 		quit.setOnAction(new EventHandler<ActionEvent>() {
