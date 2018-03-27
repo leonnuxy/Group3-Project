@@ -57,7 +57,6 @@ public class GameApp extends Application {
 		
 		Obstacle anObs = new Obstacle();
 		Rectangle obs = anObs.getObs();
-		obs.setFill(Color.RED);
 		
 		Portal aPortal = new Portal();
 		Rectangle port = aPortal.makePortal();
@@ -235,7 +234,11 @@ public class GameApp extends Application {
 		startGame();
 		
 	}
-}
 	
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+}
 	
 	
