@@ -38,35 +38,35 @@ public class Obstacle extends Item {
     public void setXPos(){
         xDefine = rand.nextInt(8 - 1) + 1;
         if (xDefine == 1) {
-            iteXPos = rand.nextInt(80-20) + 10;
+            iteXPos = rand.nextInt(80-9) + 9;
         }
         
         if (xDefine == 2) {
-            iteXPos = rand.nextInt(180-120) + 120;
+            iteXPos = rand.nextInt(180-119) + 119;
         }
         
         if (xDefine == 3) {
-            iteXPos = rand.nextInt(280-220) + 220;
+            iteXPos = rand.nextInt(280-219) + 219;
         }
         
         if (xDefine == 4) {
-            iteXPos = rand.nextInt(380-320) + 320;
+            iteXPos = rand.nextInt(380-319) + 319;
         }
         
         if (xDefine == 5) {
-            iteXPos = rand.nextInt(480-420) + 420;
+            iteXPos = rand.nextInt(480-419) + 419;
         }
         
         if (xDefine == 6) {
-            iteXPos = rand.nextInt(580-520) + 520;
+            iteXPos = rand.nextInt(580-519) + 519;
         }
         
         if (xDefine == 7) {
-            iteXPos = rand.nextInt(680-620) + 620;
+            iteXPos = rand.nextInt(680-619) + 619;
         }
         
         if (xDefine == 8) {
-            iteXPos = rand.nextInt(780-720) + 720;
+            iteXPos = rand.nextInt(780-719) + 719;
         }
         
         
@@ -130,7 +130,7 @@ public class Obstacle extends Item {
 	 */
 	public Rectangle getObs(){
 		Rectangle obsRect = new Rectangle(iteXPos, iteYPos, iteWidth, iteHeight);
-		obsRect.setFill(new ImagePattern(brick));
+		obsRect.setFill(new ImagePattern(brick, 0, 0, 40, 40, false));
 		return obsRect;
         
     }
