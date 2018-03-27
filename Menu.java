@@ -54,7 +54,7 @@ public class Menu extends Application{
 		welcomeCaption.setLayoutY(200);
 		welcomeCaption.setFont(new Font(70));
 		
-		//Refer to javafx CSS for method
+		//set font size and colour for buttons in menu
         start.setStyle("-fx-font-size: 4em;-fx-background-color: #4682b4 ");
 		quit.setStyle("-fx-font-size: 4em;-fx-background-color: #ffff00  ");
 		settings.setStyle("-fx-font-size: 4em;-fx-background-color: #4682b4  ");
@@ -64,10 +64,55 @@ public class Menu extends Application{
 		menuPane.getChildren().add(settings);
 		menuPane.getChildren().add(welcomeCaption);
 		
-		
 		primaryStage.setScene(menuScene);
 		primaryStage.show();
 		
+		//////////////////
+		
+		//create buttons and label for settings
+		Label chooseDiff = new Label("Choose Difficulty");
+		Button easyDiff = new Button("Easy");
+		Button mediumDiff = new Button("Medium");
+		Button hardDiff = new Button("Hard");
+		Button backtoMenu = new Button("Back");
+		
+		//set size and position for the easyDiff button
+		easyDiff.setLayoutX(225);
+		easyDiff.setLayoutY(400);
+		easyDiff.setPrefSize(350, 75); 
+		
+		//set size and position for the mediumDiff button
+		mediumDiff.setLayoutX(225);
+		mediumDiff.setLayoutY(500);
+		mediumDiff.setPrefSize(350, 75);
+		
+		//set size and position for the hardDiff button
+		hardDiff.setLayoutX(225);
+		hardDiff.setLayoutY(600);
+		hardDiff.setPrefSize(350, 75);
+		
+		//set size and position for the chooseDiff label
+		chooseDiff.setLayoutX(125);
+		chooseDiff.setLayoutY(200);
+		chooseDiff.setFont(new Font(70));
+		
+		//set size and position for the chooseDiff label
+		backtoMenu.setLayoutX(650);
+		backtoMenu.setLayoutY(50);
+		backtoMenu.setPrefSize(125, 75);
+		
+		//add buttons and label to settings 
+		settingsPane.getChildren().add(easyDiff);
+		settingsPane.getChildren().add(mediumDiff);
+		settingsPane.getChildren().add(hardDiff);
+		settingsPane.getChildren().add(chooseDiff);
+		settingsPane.getChildren().add(backtoMenu);
+		
+		//set font size and colour for buttons in settings
+        easyDiff.setStyle("-fx-font-size: 4em;-fx-background-color: #4682b4 ");
+		mediumDiff.setStyle("-fx-font-size: 4em;-fx-background-color: #4682b4  ");
+		hardDiff.setStyle("-fx-font-size: 4em;-fx-background-color: #4682b4 ");
+		backtoMenu.setStyle("-fx-font-size: 4em;-fx-background-color: #ffff00 ");
 		
 		//actions for the quit button
 		quit.setOnAction(new EventHandler<ActionEvent>() {
@@ -81,7 +126,7 @@ public class Menu extends Application{
 		
 		//actions fot the start button, if the start button is clicked, start the game.
 		start.setOnAction(new EventHandler<ActionEvent>() {
-
+			
 			@Override
 			public void handle(ActionEvent event) {
 			GameApp game = new GameApp();
@@ -97,6 +142,17 @@ public class Menu extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 			primaryStage.setScene(settingsScene);
+	
+
+			}
+		}
+		);
+		
+		backtoMenu.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+			primaryStage.setScene(menuScene);
 	
 
 			}
