@@ -235,60 +235,7 @@ public class GameApp extends Application {
 		startGame();
 		
 	}
-	
-	
-	public static void main(String[] args) {
-		launch(args);
-	}
 }
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-//	private double t = 0;
-//	protected void onUpdate(double tpf) {
-//		t += tpf;
-//		if (t > 0.1) {
-//			t = 0;
-//			game.update();	
-//			if (game.isOver()) {
-//				getDisplay().showMessageBox("Game is Over");
-//			}
-//		}	G
-//		render();
-//	}
-//	private void render() {
-//		GraphicsContext context = getGameScene().getGraphicsContext();
-//		context.setFill(Color.BLUE);	
-//		game.getSnake().getBody().forEach(p -> {
-//			context.fillRect(p.getX() * TILE_SIZE, p.getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-//		});
-//		context.setFill(Color.YELLOW);
-//		context.fillRect(draw().getX() * TILE_SIZE, draw().getY() * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-//	}
-//	public Point2D draw() {
-//		return game.getFood().getPosition();
-//	}
-//}
