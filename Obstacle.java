@@ -22,13 +22,13 @@ public class Obstacle extends Item {
         
     }
     
-    /* Constructor that allows the creation of an obstacle with a custom shape 
+    //Constructor that allows the creation of an obstacle with a custom shape 
     public Obstacle(int anX, int anY, int anW, int anH){
         this.iteXPos = anX;
         this.iteYPos = anY;
         this.iteWidth = anW;
         this.iteHeight = anH;
-	*/
+	}
         
     
     
