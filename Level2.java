@@ -1,5 +1,5 @@
 import javafx.animation.KeyFrame;
-import javafx.animation.PathTransition;
+//import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -9,13 +9,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+//import javafx.scene.shape.CubicCurveTo;
+//import javafx.scene.shape.MoveTo;
+//import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.image.*;
+//import javafx.scene.image.*;
 
 /**
  * runs a game of snake
@@ -25,11 +25,14 @@ public class Level2 extends Application {
 	
 	//Instance variables
 	private static final int TILE_SIZE = 10;
+	private static final double PLAYER_SIZE = 9.99;
 	private static final int APP_W = 800;
 	private static final int APP_H = 800;
 	
 	private Direction direction = Direction.RIGHT;
+	private Direction direction2 = Direction.DOWN;
 	private boolean moved = false;
+	private boolean moved2 = false;
 	private boolean running = false;
 	private double difficulty = 0.1;
 	
@@ -40,6 +43,7 @@ public class Level2 extends Application {
 	
 	
 	private ObservableList<Node> snake;
+	private ObservableList<Node> snake2;
 	
 	/*
 	 * Creates and adds the objects to the screen and is responsible for all collisions and everything that
@@ -53,6 +57,9 @@ public class Level2 extends Application {
 		Group snakeBody = new Group();
 		snake = snakeBody.getChildren();
 		
+		Group snakeBody2 = new Group();
+		snake2 = snakeBody2.getChildren();
+		
 		Obstacle anObs = new Obstacle(391, 21, 8, 758);
 		Rectangle obs = anObs.getObs();
 		obs.setFill(Color.RED);
@@ -64,10 +71,14 @@ public class Level2 extends Application {
 		//Portal aPortal = new Portal();
 		//Rectangle port = aPortal.makePortal();
 		
-		Collectible aCol = new Collectible();
+		Collectible aCol = new Collectible(50,50);
 		Rectangle col = aCol.getCol();
+		Obstacle borderRight = new Obstacle(801,0,1,800);
+		Rectangle rightBorder = borderRight.getObs();
 		
 		root.getChildren().add(snakeBody);
+		root.getChildren().add(rightBorder);
+		root.getChildren().add(snakeBody2);
 		root.getChildren().add(obs);
 		root.getChildren().add(movObs);
 		root.getChildren().add(col);
@@ -93,11 +104,15 @@ public class Level2 extends Application {
 				return;
 			
 			boolean toRemove = snake.size()>1;
+			boolean toRemove2 = snake2.size()>1;
 			
 			Node tail = toRemove ? snake.remove(snake.size()-1) : snake.get(0);
+			Node tail2 = toRemove2 ? snake2.remove(snake2.size()-1) : snake2.get(0);
 			
 			double tailX = tail.getTranslateX();
 			double tailY = tail.getTranslateY();
+			double tail2X = tail.getTranslateX();
+			double tail2Y = tail.getTranslateY();
 			
 			// handles the direction of the tail relative to the head
 			switch (direction) {
@@ -120,10 +135,34 @@ public class Level2 extends Application {
 			}
 			
 			moved = true;
-			
 			if (toRemove)
 				snake.add(0, tail);
 			
+			switch (direction2) {
+			case UP:
+				tail2.setTranslateX(snake2.get(0).getTranslateX());
+				tail2.setTranslateY(snake2.get(0).getTranslateY() - TILE_SIZE);
+				break;
+			case DOWN:
+				tail2.setTranslateX(snake2.get(0).getTranslateX());
+				tail2.setTranslateY(snake2.get(0).getTranslateY() + TILE_SIZE);
+				break;
+			case LEFT:
+				tail2.setTranslateX(snake2.get(0).getTranslateX() - TILE_SIZE);
+				tail2.setTranslateY(snake2.get(0).getTranslateY());
+				break;
+			case RIGHT:
+				tail2.setTranslateX(snake2.get(0).getTranslateX() + TILE_SIZE);
+				tail2.setTranslateY(snake2.get(0).getTranslateY() );
+			
+		}
+		
+		moved2 = true;
+			
+		if (toRemove2)
+			snake2.add(0, tail2);
+			
+		/** first snake collisions */
 			/* collision with self */
 			for (Node rect: snake) {				
 				if (rect != tail && tail.getTranslateX() == rect.getTranslateX() && tail.getTranslateY() == rect.getTranslateY()) {
@@ -133,8 +172,12 @@ public class Level2 extends Application {
 			}
 			
 			/* collision with window border */
-			if (tail.getTranslateX() < 0 || tail.getTranslateX() >= APP_W
+			/*if (tail.getTranslateX() < 0 || tail.getTranslateX() >= APP_W
 				|| tail.getTranslateY() < 0 || tail.getTranslateY() >= APP_H) {
+				restartGame();
+			}*/
+			
+			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent())) {
 				restartGame();
 			}
 			
@@ -157,7 +200,7 @@ public class Level2 extends Application {
 				root.getChildren().remove(col);
 				root.getChildren().add(col);
 				
-				Rectangle rect = new Rectangle(TILE_SIZE, TILE_SIZE);
+				Rectangle rect = new Rectangle(40,0, TILE_SIZE, TILE_SIZE);
 				rect.setFill(Color.rgb(241, 249, 12));
 				rect.setTranslateX(tailX);
 				rect.setTranslateY(tailY);
@@ -167,8 +210,56 @@ public class Level2 extends Application {
 	
 			}
 			
-				
 			
+			/** the other snake collisions */
+			/* collision with self */
+			for (Node rect2: snake2) {				
+				if (rect2 != tail2 && tail2.getTranslateX() == rect2.getTranslateX() && tail2.getTranslateY() == rect2.getTranslateY()) {
+					restartGame();
+					break;
+				}
+			}
+			
+			/* collision with window border */
+			/*if (tail.getTranslateX() < 0 || tail.getTranslateX() >= APP_W
+				|| tail.getTranslateY() < 0 || tail.getTranslateY() >= APP_H) {
+				restartGame();
+			}*/
+			
+			if (snakeBody2.getBoundsInParent().intersects(rightBorder.getBoundsInParent())) {
+				restartGame();
+			}
+			
+			if(snakeBody2.getBoundsInParent().intersects(movObs.getBoundsInParent())) {
+				restartGame();
+			}
+
+			
+			/* collision with obstacle */
+			if (tail2.getBoundsInParent().intersects(obs.getX(), obs.getY(), obs.getWidth(), obs.getHeight())) {
+				stopGame();
+			}
+			
+			/* collision with collectible */
+			if (tail2.getBoundsInParent().intersects(col.getBoundsInParent())){
+				aCol.setXPos();
+				aCol.setYPos();
+				col.relocate(aCol.getXPos(), aCol.getYPos());       
+				col.getBoundsInParent();
+				root.getChildren().remove(col);
+				root.getChildren().add(col);
+				
+				Rectangle rect2 = new Rectangle(TILE_SIZE, TILE_SIZE);
+				rect2.setTranslateX(tail2X);
+				rect2.setTranslateY(tail2Y);
+				setDiff(0.1);
+				
+				snake2.add(rect2);
+	
+			}
+			
+				
+			//General collisions
 			if (obs.getBoundsInParent().intersects(col.getBoundsInParent())) {
 				aCol.setXPos();
 				aCol.setYPos();
@@ -178,6 +269,9 @@ public class Level2 extends Application {
 				aCol.setXPos();
 				aCol.setYPos();
 				col.relocate(aCol.getXPos(), aCol.getYPos()); 
+			}
+			if (tail.getBoundsInParent().intersects(tail2.getBoundsInParent())) {
+				restartGame();
 			}
 
 			
@@ -204,6 +298,7 @@ public class Level2 extends Application {
 		running = false;
 		timeline.stop();
 		snake.clear();
+		snake2.clear();
 	}
 	
 	/*
@@ -211,8 +306,13 @@ public class Level2 extends Application {
 	 */
 	public void startGame() {
 		direction = Direction.RIGHT;
-		Rectangle head = new Rectangle(TILE_SIZE, TILE_SIZE);
+		direction2 = Direction.DOWN;
+		Rectangle head = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
+		head.setFill(Color.rgb(241, 249, 12));
+		head.setLayoutX(40);
+		Rectangle head2 = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
 		snake.add(head);
+		snake2.add(head2);
 		timeline.play();
 		running = true;
 	}
@@ -223,33 +323,64 @@ public class Level2 extends Application {
 	public Scene run() {
 		Scene scene = new Scene(createContent());
 		
-		
 		scene.setOnKeyPressed(event -> {
-			if (!moved)
+			if (!moved2)
 				return;
 
-		if (moved) {
+		    if (moved2) {
 			switch (event.getCode()) {
 				case UP:
-					if (direction != Direction.DOWN)
-						direction = Direction. UP;
+					if (direction2 != Direction.DOWN)
+						direction2 = Direction. UP;
 					break;
 				case DOWN:
-					if (direction != Direction.UP)
-						direction = Direction.DOWN;
+					if (direction2 != Direction.UP)
+						direction2 = Direction.DOWN;
 					break;
 				case LEFT:
-					if (direction != Direction.RIGHT)
-						direction = Direction.LEFT;
+					if (direction2 != Direction.RIGHT)
+						direction2 = Direction.LEFT;
 					break;
 				case RIGHT:
-					if (direction != Direction.LEFT)
-						direction = Direction.RIGHT;
+					if (direction2 != Direction.LEFT)
+						direction2 = Direction.RIGHT;
 					break;
+			default:
+				break;
 			}
 		}
 		
-		moved = false;
+		moved2 = false;
+		
+		if (!moved)
+			return;
+
+		if (moved) {
+		switch (event.getCode()) {
+			case W:
+				if (direction != Direction.DOWN)
+					direction = Direction. UP;
+				break;
+			case S:
+				if (direction != Direction.UP)
+					direction = Direction.DOWN;
+				break;
+			case A:
+				if (direction != Direction.RIGHT)
+					direction = Direction.LEFT;
+				break;
+			case D:
+				if (direction != Direction.LEFT)
+					direction = Direction.RIGHT;
+				break;
+		default:
+			break;
+		}
+	}
+	
+	moved = false;	
+		
+		
 	});
 		
 		return scene;
@@ -262,7 +393,7 @@ public class Level2 extends Application {
 	@Override
 	public void start(Stage primaryStage){
 		primaryStage.setTitle("Snake");
-		primaryStage.setScene(this.run());
+		primaryStage.setScene(run());
 		primaryStage.show();
 		startGame();
 		
