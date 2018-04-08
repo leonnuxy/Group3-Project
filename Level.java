@@ -1,10 +1,9 @@
+import java.util.ConcurrentModificationException;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -14,55 +13,21 @@ import javafx.util.Duration;
 import javafx.scene.Group;
 import javafx.scene.Node;
 
-public class Level extends Application{
-	
-	private static final int TILE_SIZE = 10;
-	private static final double PLAYER_SIZE = 9.99;
-	private static final int APP_W = 800;
-	private static final int APP_H = 800;
-	long timeStart;
-	long timeEnd;
-	private Direction direction = Direction.DOWN;
-	private boolean moved = false;
-	private boolean running = false;
-	private double difficulty = 0.1;	
-	private Timeline timeline = new Timeline();
-	private ObservableList<Node> snake;
-	private Stage primaryStage = new Stage();
-	private Stage primaryStage2 = new Stage();
-	
-
-	
-	public void restartGame() {
-		stopGame();
-		startGame();
-	}
-	
-	public void stopGame() {
-		timeEnd = TimerS.getTime();
-		running = false;
-		timeline.stop();
-		snake.clear();
-		System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
-	}
-	
-	/*
-	 * puts the snake back to the top left of the screen to start again
-	 */
-	public void startGame() {
-		timeStart = TimerS.getTime();
-		direction = Direction.RIGHT;
-		Rectangle head = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
-		head.setFill(Color.rgb(241, 249, 12));
-		snake.add(head);
-		timeline.play();
-		running = true;
-	}
+public class Level extends LevelActions{
 	
 	/*
 	 * responsible for moving the snake head
 	 */
-	public Scene run() {
+	/*public Scene run() {
+		
+		
+		return scene;
+	
+	}*/
+
+	@Override
+	public void start(Stage primaryStage){
+		try {
 		Pane root = new Pane();
 		root.setStyle("-fx-background-image: url(Pane.png);");
 		root.setPrefSize(APP_W, APP_H);
@@ -138,10 +103,6 @@ public class Level extends Application{
 		slamUp2.setAutoReverse(true);
 		slamUp2.play();
 		
-		
-		
-		Label pos = new Label();
-		root.getChildren().add(pos);
 		root.getChildren().addAll(slamMID,slamDOWN1,slamUP1, slamUP, slamDOWN );
 		root.getChildren().add(snakeBody);
 		root.getChildren().add(rightBorder);
@@ -150,20 +111,23 @@ public class Level extends Application{
 		root.getChildren().add(topBorder);
 		root.getChildren().add(col);
 		
-		root.setOnMouseMoved((evt) -> { 
-			String pos1 = ("x = "+ evt.getX() +",  y = " + evt.getY());
-			pos.setLayoutX(5);
-			pos.setText(pos1);
-			pos.setLayoutY(5);		} );
-		
 		KeyFrame frame = new KeyFrame(Duration.seconds(difficulty), event ->{
 			if (!running)
 				return;
 			
+			//checks if the snake is more than one block in size
 			boolean toRemove = snake.size()>1;
+			
+			//if remove is true then the tail of the snake becomes the node behind the head for addition of tail pieces and if not, it 
+			// sets the tail to the head
+			// the head of the snake is a tail piece. 
 			Node tail = toRemove ? snake.remove(snake.size()-1) : snake.get(0);
+			
+			//X and Y coordinates if the tail node
 			double tailX = tail.getTranslateX();
 			double tailY = tail.getTranslateY();
+			
+			
 			switch (direction) {
 				case UP:
 					tail.setTranslateX(snake.get(0).getTranslateX());
@@ -185,6 +149,8 @@ public class Level extends Application{
 			if (toRemove)
 				snake.add(0, tail);
 			moved = true;
+			
+			//checks collision with self
 			for (Node rect: snake) {				
 				if (rect != tail && tailX == rect.getTranslateX() && tailY == rect.getTranslateY()) {
 					restartGame();
@@ -241,11 +207,11 @@ public class Level extends Application{
 			if (Score.getScore() == 1) {
 				primaryStage.close();
 				System.out.println("Yes");
-				Level2 level2 = new Level2();
-				primaryStage2.setScene(level2.run());
-				primaryStage2.show();
-				level2.startGame();
 				timeline.stop();
+				Level2 level2 = new Level2();
+				level2.start(primaryStage);
+				level2.startGame();
+				
 				
 				//primaryStage.close();
 			}
@@ -286,18 +252,15 @@ public class Level extends Application{
 		
 		moved = false;	
 	});
-		
-		return scene;
-	
-	}
-
-	@Override
-	public void start(Stage primaryStage){
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Snake");
-		primaryStage.setScene(run());
+		primaryStage.setScene(scene);
 		primaryStage.show();
 		startGame();
 		
 	}
+	catch (ConcurrentModificationException e) {
+		System.out.println(e.getMessage());
+	}
+	} 
 }

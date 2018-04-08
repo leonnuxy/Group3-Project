@@ -1,6 +1,5 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -15,7 +14,7 @@ import javafx.util.Duration;
  * runs a game of snake
  *
  */
-public class LevelTwoPlayers extends Application {
+public class LevelTwoPlayers extends LevelActions {
 	
 	//Instance variables
 	private static final int TILE_SIZE = 10;
@@ -31,7 +30,6 @@ public class LevelTwoPlayers extends Application {
 	private boolean moved = false;
 	private boolean moved2 = false;
 	private boolean running = false;
-	private double difficulty = 0.1;
 	
 	private Timeline timeline = new Timeline();
 	//private Game game;
@@ -46,10 +44,6 @@ public class LevelTwoPlayers extends Application {
 	 * Creates and adds the objects to the screen and is responsible for all collisions and everything that
 	 * happens on screen
 	 */
-	
-	public void setDiff(double diff) {
-		difficulty += diff;
-	}
 		
 	public void restartGame() {
 		stopGame();
@@ -57,19 +51,17 @@ public class LevelTwoPlayers extends Application {
 	}
 	
 	public void stopGame() {
-		timeEnd = TimerS.getTime();
 		running = false;
 		timeline.stop();
 		snake.clear();
 		snake2.clear();
-		System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
+		//System.out.println("Time Elapsed: " + TimerS.getTotalTime());
 	}
 	
 	/*
 	 * puts the snake back to the top left of the screen to start again
 	 */
 	public void startGame() {
-		timeStart = TimerS.getTime();
 		direction = Direction.RIGHT;
 		direction2 = Direction.DOWN;
 		Rectangle head = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
@@ -85,8 +77,18 @@ public class LevelTwoPlayers extends Application {
 	/*
 	 * responsible for moving the snake head
 	 */
-	public Scene run() {
+	/*public Scene run() {
 		
+		
+		return scene;
+	
+	}*/
+	
+	/*
+	 * start the show
+	 */
+	@Override
+	public void start(Stage primaryStage){
 		Pane root = new Pane();
 		root.setStyle("-fx-background-image: url(Pane.png);");
 		root.setPrefSize(APP_W, APP_H);
@@ -224,8 +226,11 @@ public class LevelTwoPlayers extends Application {
 				restartGame();
 			}*/
 			
-			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent())) {
-				restartGame();
+			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) ||
+					snakeBody.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
+					snakeBody.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
+					snakeBody.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
+				
 				//System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
 			}
 			
@@ -248,11 +253,10 @@ public class LevelTwoPlayers extends Application {
 				root.getChildren().remove(col);
 				root.getChildren().add(col);
 				
-				Rectangle rect = new Rectangle(40,0, TILE_SIZE, TILE_SIZE);
+				Rectangle rect = new Rectangle(40, 0, TILE_SIZE, TILE_SIZE);
 				rect.setFill(Color.rgb(241, 249, 12));
 				rect.setTranslateX(tailX);
 				rect.setTranslateY(tailY);
-				setDiff(0.1);
 				
 				snake.add(rect);
 	
@@ -289,6 +293,8 @@ public class LevelTwoPlayers extends Application {
 			/* collision with obstacle */
 			if (tail2.getBoundsInParent().intersects(obs.getX(), obs.getY(), obs.getWidth(), obs.getHeight())) {
 				stopGame();
+				TimerS.setEndTime();
+				System.out.println(TimerS.getTotalTime());
 			}
 			
 			/* collision with collectible */
@@ -303,7 +309,6 @@ public class LevelTwoPlayers extends Application {
 				Rectangle rect2 = new Rectangle(TILE_SIZE, TILE_SIZE);
 				rect2.setTranslateX(tail2X);
 				rect2.setTranslateY(tail2Y);
-				setDiff(0.1);
 				Score.setScore(1);
 				
 				snake2.add(rect2);
@@ -396,20 +401,8 @@ public class LevelTwoPlayers extends Application {
 		
 		
 	});
-		
-		
-		
-		return scene;
-	
-	}
-	
-	/*
-	 * start the show
-	 */
-	@Override
-	public void start(Stage primaryStage){
 		primaryStage.setTitle("Snake");
-		primaryStage.setScene(run());
+		primaryStage.setScene(scene);
 		primaryStage.show();
 		startGame();
 		
