@@ -1,21 +1,15 @@
 import javafx.animation.KeyFrame;
-//import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-//import javafx.scene.shape.CubicCurveTo;
-//import javafx.scene.shape.MoveTo;
-//import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-//import javafx.scene.image.*;
 
 /**
  * runs a game of snake
@@ -52,7 +46,46 @@ public class LevelTwoPlayers extends Application {
 	 * Creates and adds the objects to the screen and is responsible for all collisions and everything that
 	 * happens on screen
 	 */
-	public Parent createContent() {
+	
+	public void setDiff(double diff) {
+		difficulty += diff;
+	}
+		
+	public void restartGame() {
+		stopGame();
+		startGame();
+	}
+	
+	public void stopGame() {
+		timeEnd = TimerS.getTime();
+		running = false;
+		timeline.stop();
+		snake.clear();
+		snake2.clear();
+		System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
+	}
+	
+	/*
+	 * puts the snake back to the top left of the screen to start again
+	 */
+	public void startGame() {
+		timeStart = TimerS.getTime();
+		direction = Direction.RIGHT;
+		direction2 = Direction.DOWN;
+		Rectangle head = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
+		head.setFill(Color.rgb(241, 249, 12));
+		head.setLayoutX(40);
+		Rectangle head2 = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
+		snake.add(head);
+		snake2.add(head2);
+		timeline.play();
+		running = true;
+	}
+	
+	/*
+	 * responsible for moving the snake head
+	 */
+	public Scene run() {
 		
 		Pane root = new Pane();
 		root.setStyle("-fx-background-image: url(Pane.png);");
@@ -79,9 +112,18 @@ public class LevelTwoPlayers extends Application {
 		Rectangle col = aCol.getCol();
 		Obstacle borderRight = new Obstacle(801,0,1,800);
 		Rectangle rightBorder = borderRight.getObs();
+		Obstacle borderLeft = new Obstacle(-2,0,1,800);
+		Rectangle leftBorder = borderLeft.getObs();
+		Obstacle borderBottom = new Obstacle(0,801,800,1);
+		Rectangle bottomBorder = borderBottom.getObs();
+		Obstacle borderTop = new Obstacle(0,-2,800,1);
+		Rectangle topBorder = borderTop.getObs();
 		
 		root.getChildren().add(snakeBody);
 		root.getChildren().add(rightBorder);
+		root.getChildren().add(leftBorder);
+		root.getChildren().add(bottomBorder);
+		root.getChildren().add(topBorder);
 		root.getChildren().add(snakeBody2);
 		root.getChildren().add(obs);
 		root.getChildren().add(movObs);
@@ -232,7 +274,10 @@ public class LevelTwoPlayers extends Application {
 				restartGame();
 			}*/
 			
-			if (snakeBody2.getBoundsInParent().intersects(rightBorder.getBoundsInParent())) {
+			if (snakeBody2.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
+					snakeBody2.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
 				restartGame();
 			}
 			
@@ -259,6 +304,7 @@ public class LevelTwoPlayers extends Application {
 				rect2.setTranslateX(tail2X);
 				rect2.setTranslateY(tail2Y);
 				setDiff(0.1);
+				Score.setScore(1);
 				
 				snake2.add(rect2);
 	
@@ -279,6 +325,7 @@ public class LevelTwoPlayers extends Application {
 			if (tail.getBoundsInParent().intersects(tail2.getBoundsInParent())) {
 				restartGame();
 			}
+			
 
 			
 		});
@@ -288,49 +335,7 @@ public class LevelTwoPlayers extends Application {
 		
 		// add obstacle
 		
-		return root;
-	}
-	
-	public void setDiff(double diff) {
-		difficulty += diff;
-	}
-		
-	public void restartGame() {
-		stopGame();
-		startGame();
-	}
-	
-	public void stopGame() {
-		timeEnd = TimerS.getTime();
-		running = false;
-		timeline.stop();
-		snake.clear();
-		snake2.clear();
-		System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
-	}
-	
-	/*
-	 * puts the snake back to the top left of the screen to start again
-	 */
-	public void startGame() {
-		timeStart = TimerS.getTime();
-		direction = Direction.RIGHT;
-		direction2 = Direction.DOWN;
-		Rectangle head = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
-		head.setFill(Color.rgb(241, 249, 12));
-		head.setLayoutX(40);
-		Rectangle head2 = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
-		snake.add(head);
-		snake2.add(head2);
-		timeline.play();
-		running = true;
-	}
-	
-	/*
-	 * responsible for moving the snake head
-	 */
-	public Scene run() {
-		Scene scene = new Scene(createContent());
+		Scene scene = new Scene(root);
 		
 		scene.setOnKeyPressed(event -> {
 			if (!moved2)
@@ -391,6 +396,8 @@ public class LevelTwoPlayers extends Application {
 		
 		
 	});
+		
+		
 		
 		return scene;
 	
