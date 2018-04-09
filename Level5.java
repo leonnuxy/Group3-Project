@@ -1,110 +1,94 @@
+import java.util.ConcurrentModificationException;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Level5 extends Application implements FrameKey {
-
-	private static final double SPEED = 2;
-	private static final int rad = 1;
-	private static final int MID = 400;
-	private static final int LEN = 100;
-	private static final int CELL = 20;
+		
+public class Level5 extends LevelActions{
+	
+	static protected Rectangle obstacle;
+	final static double W = 800;
+	final static double GAP = 100;
+	final static double LEN = W - GAP;
+	final static double THICK = 50;
+	final static double SPEED = 20.0;
+	static Node f;
+	static Rectangle fan;
 	private static final int TILE_SIZE = 10;
-	private static final double APP_W = MID*2;
-	private static final double APP_H = MID*2;
-	private int score;
-	private int score_final;
-	private Label scoreLabel = new Label();
-	private static boolean moved = false;
-	private boolean running = false;
-	private double difficulty = 0.1;
-	private Timeline timeline = new Timeline();
-	Snake obj = new Snake();
-	private ObservableList<Node> snake = obj.getSnake();
-	Direction direction;
 	boolean collision = false;
+	private final double height = 20;
 	
-	
-	// Object types of polygons that spin in a circular motion	
-	public Parent createContent() {
-		Pane pane = new Pane();
-		pane.setStyle("-fx-background-image: url(Pane.png);");
+	@Override
+	public void start(Stage primaryStage) {
+		try {
+		Pane root = new Pane();
+		root.setStyle("-fx-background-image: url(Pane.png);");
+		root.setPrefSize(APP_W, APP_H);
 		
-		Group snakeBody = obj.getSnakeBody();
+		Group snakeBody = new Group();
 		snake = snakeBody.getChildren();
-		
-		Collectible aCol = new Collectible();
+		Collectible aCol = new Collectible(50,50);
 		Rectangle col = aCol.getCol();
-		Polygon poly1 = new Polygon(MID,LEN,MID+CELL,(LEN*2)-CELL,LEN+MID,LEN*2,MID+CELL,(LEN*2)+CELL,MID,MID-LEN,MID-CELL,(LEN*2)+CELL,MID-LEN,LEN*2,MID-CELL,(LEN*2)-CELL,MID,LEN);
-		Polygon poly2 = new Polygon(MID,LEN,MID+CELL,(LEN*2)-CELL,LEN+MID,LEN*2,MID+CELL,(LEN*2)+CELL,MID,MID-LEN,MID-CELL,(LEN*2)+CELL,MID-LEN,LEN*2,MID-CELL,(LEN*2)-CELL,MID,LEN);
-		Polygon poly3 = new Polygon(MID,LEN,MID+CELL,(LEN*2)-CELL,LEN+MID,LEN*2,MID+CELL,(LEN*2)+CELL,MID,MID-LEN,MID-CELL,(LEN*2)+CELL,MID-LEN,LEN*2,MID-CELL,(LEN*2)-CELL,MID,LEN);
-		Polygon poly4 = new Polygon(MID,LEN,MID+CELL,(LEN*2)-CELL,LEN+MID,LEN*2,MID+CELL,(LEN*2)+CELL,MID,MID-LEN,MID-CELL,(LEN*2)+CELL,MID-LEN,LEN*2,MID-CELL,(LEN*2)-CELL,MID,LEN);
-		Circle cir1 = new Circle(MID,LEN*2,rad); Circle cir2 = new Circle(MID,MID+(LEN*2),rad); 
-		Circle cir3 = new Circle(LEN*2,MID,rad); Circle cir4 = new Circle(MID+(LEN*2),MID,rad);
-		
-		//Creates the a new Path Transition for each object
+		Obstacle borderRight = new Obstacle(801,0,1,800);
+		Rectangle rightBorder = borderRight.getObs();
+		Obstacle borderLeft = new Obstacle(-2,0,1,800);
+		Rectangle leftBorder = borderLeft.getObs();
+		Obstacle borderBottom = new Obstacle(0,801,800,1);
+		Rectangle bottomBorder = borderBottom.getObs();
+		Obstacle borderTop = new Obstacle(0,-2,800,1);
+		Rectangle topBorder = borderTop.getObs();
+		// make it start outside the page
+		Rectangle fan = new Rectangle(W/2-(THICK/2), GAP, THICK, W/2-GAP);
+		Rectangle wall1 = new Rectangle(GAP, GAP+THICK, THICK, W-(GAP*2));
+		Rectangle wall2 = new Rectangle(LEN-THICK, GAP+THICK, THICK, W-(GAP*2));
+		Rectangle wall3 = new Rectangle(GAP, 600-THICK-5, LEN-GAP, THICK);
+		Circle cyc = new Circle(W/2, 350, 5);
+		cyc.setRadius(height/4);
 		PathTransition trans = new PathTransition();
-		trans.setNode(poly1);
-		trans.setPath(cir1);
 		trans.setDuration(Duration.seconds(SPEED));
+		trans.setNode(fan);
+		trans.setPath(cyc);
 		trans.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-		trans.setCycleCount(PathTransition.INDEFINITE);
+		trans.setCycleCount(PathTransition.INDEFINITE);	
 		trans.play();
 		
-		PathTransition trans2 = new PathTransition();
-		trans2.setNode(poly2);
-		trans2.setPath(cir2);
-		trans2.setDuration(Duration.seconds(SPEED));
-		trans2.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-		trans2.setCycleCount(PathTransition.INDEFINITE);
-		trans2.play();
+		Label pos = new Label();
+		root.getChildren().addAll(fan, pos, wall1, wall2, wall3);
+		root.getChildren().add(snakeBody);
+		root.getChildren().add(rightBorder);
+		root.getChildren().add(leftBorder);
+		root.getChildren().add(bottomBorder);
+		root.getChildren().add(topBorder);
+		root.getChildren().add(col);
 		
-		PathTransition trans3 = new PathTransition();
-		trans3.setNode(poly3);
-		trans3.setPath(cir3);
-		trans3.setDuration(Duration.seconds(SPEED));
-		trans3.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-		trans3.setCycleCount(PathTransition.INDEFINITE);
-		trans3.play();
-		
-		PathTransition trans4 = new PathTransition();
-		trans4.setNode(poly4);
-		trans4.setPath(cir4);
-		trans4.setDuration(Duration.seconds(SPEED));
-		trans4.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-		trans4.setCycleCount(PathTransition.INDEFINITE);
-		trans4.play();
-		
-		pane.getChildren().add(snakeBody);
-		pane.getChildren().addAll(poly4,poly3,poly2,poly1,col);
-		
-		KeyFrame frame = new KeyFrame(Duration.seconds(difficulty), event ->{
+		KeyFrame frame = new KeyFrame(Duration.seconds(Difficulty.getDifficulty()), event ->{
 			if (!running)
 				return;
-	
-			// checks if the snake has more than one block if yes then it removes the last block that
-			// and that becomes the tail if not the head becomes the tail.
-			boolean toRemove = snake.size()>1;
-			Node tail = obj.getTail();
-			tail = toRemove ? snake.remove(snake.size()-1): snake.get(0);
 			
+			//checks if the snake is more than one block in size
+			boolean toRemove = snake.size()>1;
+			
+			//if remove is true then the tail of the snake becomes the node behind the head for addition of tail pieces and if not, it 
+			// sets the tail to the head
+			// the head of the snake is a tail piece. 
+			Node tail = toRemove ? snake.remove(snake.size()-1) : snake.get(0);
+			
+			//X and Y coordinates if the tail node
 			double tailX = tail.getTranslateX();
 			double tailY = tail.getTranslateY();
 			
-			// handles the direction of the tail relative to the head
+			
 			switch (direction) {
 				case UP:
 					tail.setTranslateX(snake.get(0).getTranslateX());
@@ -121,33 +105,31 @@ public class Level5 extends Application implements FrameKey {
 				case RIGHT:
 					tail.setTranslateX(snake.get(0).getTranslateX() + TILE_SIZE);
 					tail.setTranslateY(snake.get(0).getTranslateY() );
+				
 			}
-			moved = true;
 			if (toRemove)
 				snake.add(0, tail);
+			moved = true;
 			
-			/* collision with self */
-			for (Node rect: snake) {				
-				if (rect != tail && tail.getTranslateX() == rect.getTranslateX() && tail.getTranslateY() == rect.getTranslateY()) {
+			//checks collision with self
+			/*for (Node rect: snake) {				
+				if (rect != tail && tailX == rect.getTranslateX() && tailY == rect.getTranslateY()) {
 					restartGame();
-					break;
 				}
+			}*/
+			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
+					snakeBody.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
+					snakeBody.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
+					snakeBody.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
+				endGame();
+				//System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
 			}
 			
-			/* collision with window border */
-			if (tail.getTranslateX() < 0 || tail.getTranslateX() >= APP_W
-				|| tail.getTranslateY() < 0 || tail.getTranslateY() >= APP_H) {
-				collision = true;
-//				restartGame();
-			}
-			
-			/* collision with obstacle and wall and fan*/
-			if (tail.getBoundsInParent().intersects(poly1.getBoundsInParent()) || tail.getBoundsInParent().intersects(poly2.getBoundsInParent())
-					|| tail.getBoundsInParent().intersects(poly2.getBoundsInParent())
-					||tail.getBoundsInParent().intersects(poly3.getBoundsInParent()) ||
-					tail.getBoundsInParent().intersects(poly4.getBoundsInParent())){
-//				System.exit(0);
-				collision = true;
+			if (snakeBody.getBoundsInParent().intersects(fan.getBoundsInParent()) ||
+					snakeBody.getBoundsInParent().intersects(wall1.getBoundsInParent()) ||
+					snakeBody.getBoundsInParent().intersects(wall2.getBoundsInParent()) ||
+					snakeBody.getBoundsInParent().intersects(wall3.getBoundsInParent())) {
+				endGame();
 			}
 			
 			/* collision with collectible */
@@ -156,86 +138,53 @@ public class Level5 extends Application implements FrameKey {
 				aCol.setYPos();
 				col.relocate(aCol.getXPos(), aCol.getYPos());       
 				col.getBoundsInParent();
-				pane.getChildren().remove(col);
-				pane.getChildren().add(col);
+				root.getChildren().remove(col);
+				root.getChildren().add(col);
 				
-//				Increases the size of the snake.
 				Rectangle rect = new Rectangle(TILE_SIZE, TILE_SIZE);
 				rect.setFill(Color.rgb(241, 249, 12));
 				rect.setTranslateX(tailX);
 				rect.setTranslateY(tailY);
+				Score.setScore(1);
 				snake.add(rect);
 	
-				score += 1;
-				scoreLabel.setText("Your Current Score is "+score);
-				scoreLabel.setTextFill(Color.RED);
-				scoreLabel.setLayoutX(APP_W-150);
-				scoreLabel.setLayoutY(APP_H-50);
 			}
+			/*if (obs.getBoundsInParent().intersects(col.getBoundsInParent())) {
+				aCol.setXPos();
+				aCol.setYPos();
+				col.relocate(aCol.getXPos(), aCol.getYPos()); 
+			}
+			if (col.getBoundsInParent().intersects(obs.getBoundsInParent())) {
+				aCol.setXPos();
+				aCol.setYPos();
+				col.relocate(aCol.getXPos(), aCol.getYPos()); 
+			}
+			if (tail.getBoundsInParent().intersects(tail2.getBoundsInParent())) {
+				restartGame();
+			}*/
 			
-			if (collision) {
+			if (Score.getScore() == score + 1) {
+				Difficulty.setDifficulty(0.05);
+				primaryStage.close();
 				timeline.stop();
-				score_final = score;
-				Group restartPage = new Group();
-				Button butt = new Button("Play Again?");
-				butt.setLayoutX(100);
-				butt.setLayoutY(150);
-				Label lab = new Label("Your Final Score is "+ score_final);
-				lab.setLayoutX(10);
-				lab.setLayoutY(200/2);
-				restartPage.getChildren().add(butt);
-				restartPage.getChildren().add(lab);
-				Scene newScene = new Scene(restartPage, 200,200, Color.RED);
-				Stage stage = new Stage();
-				stage.setScene(newScene);
-				stage.show();
-				collision = false;
-				butt.setOnAction(e -> {
-//					startGame();
-					stage.close();
-					timeline.play();
-				});
-				
-			
+				Level level = new Level();
+				level.start(primaryStage);
+				level.stopGame();
+				level.startGame();
 			}
-		});
+				
+				//primaryStage.close();
+			});
 		
-		pane.getChildren().add(scoreLabel);
 		timeline.getKeyFrames().add(frame);
 		timeline.setCycleCount(Timeline.INDEFINITE);
-		return pane;
-	}
-	
-
-	public void restartGame() {
-		stopGame();
-		startGame();
-	}
-	
-
-	public void stopGame() {
-		running = false;
-		timeline.stop();
-		snake.clear();
-	}
-	
-
-	public void startGame() {
-		direction = Direction.RIGHT;
-		Rectangle head = new Rectangle(TILE_SIZE,TILE_SIZE);
-		head.setFill(Color.rgb(241, 249, 12));
-		snake.add(head);
-		timeline.play();
-		running = true;
-	}
-	
-
-	public Scene run() {
-		Scene scene = new Scene(createContent(), MID*2, MID*2);
+		Scene scene = new Scene(root);
+		
 		scene.setOnKeyPressed(event -> {
 			if (!moved)
 				return;
-		if (moved) {
+
+		    if (moved) {
 			switch (event.getCode()) {
 				case UP:
 					if (direction != Direction.DOWN)
@@ -257,22 +206,18 @@ public class Level5 extends Application implements FrameKey {
 				break;
 			}
 		}
-		moved = false;
+		
+		moved = false;	
 	});
-		return scene;
-	}
-	
-
-	public void start(Stage primaryStage) {
+		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Snake");
-		primaryStage.setScene(this.run());
+		primaryStage.setScene(scene);
 		primaryStage.show();
-		startGame();
+		startGame();	
 	}
-	
-	public static void main(String[] args) {
-		launch(args);
-	
+		catch (ConcurrentModificationException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

@@ -11,9 +11,17 @@ public class Score {
 		return score;
 	}
 	
+	public static void initScore() {
+		score = 0;
+	}
+	
 	public static Label scoreLabel() {
 		Label score_label = new Label("Collectibles: " + getScore());
 		return score_label;
+	}
+	
+	public static long finalScore() {
+		return TimerS.getTotalTime();
 	}
 	
 }

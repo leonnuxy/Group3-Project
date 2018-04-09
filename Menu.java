@@ -1,4 +1,3 @@
-import java.util.Random;
 import javafx.application.Application;
 import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
@@ -61,8 +60,6 @@ public class Menu extends Application{
 		primaryStage.setScene(menuScene);
 		primaryStage.show();
 		
-		//////////////////
-		
 		//create buttons and label for settings
 		Label chooseDiff = new Label("Choose Difficulty");
 		Button easyDiff = new Button("Easy");
@@ -118,7 +115,7 @@ public class Menu extends Application{
 		}
 		);
 		
-		//actions fot the start button, if the start button is clicked, start the game.
+		//actions for the start button, if the start button is clicked, start the game.
 		start.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
@@ -143,21 +140,42 @@ public class Menu extends Application{
 		);
 		
 		easyDiff.setOnAction(new EventHandler<ActionEvent>() {
-			int RanLevel = rando.nextInt(2);
 			@Override
 			public void handle(ActionEvent event) {
-				
-			if (RanLevel == 0) {
+				Score.initScore();
+				Difficulty.setDifficulty(0.1);
 				Level game = new Level();
+				TimerS.setStartTime();
 				game.start(primaryStage);
-				//game.start(primaryStage);
 			}
-			else if (RanLevel == 1) {
-				LevelTwoPlayers level2 = new LevelTwoPlayers();
-				level2.start(primaryStage);
-		
 		}
 		);
+		
+		mediumDiff.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Score.initScore();
+				Difficulty.setDifficulty(0.075);
+				Level game = new Level();
+				game.start(primaryStage);
+				TimerS.setStartTime();
+			}
+		}
+		);
+		
+		hardDiff.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Score.initScore();
+				Difficulty.setDifficulty(0.05);
+				Level game = new Level();
+				TimerS.setStartTime();
+				game.start(primaryStage);
+				TimerS.setStartTime();
+			}
+		}
+		);
+			
 
 	}
 

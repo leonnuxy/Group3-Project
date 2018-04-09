@@ -1,17 +1,17 @@
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.paint.ImagePattern;
 
 /**
- This class creates an Obstacle optimized for a 500 by 500 field
+ This class creates an Obstacle optimized for a 800 by 800 field
  */
 public class Obstacle extends Item {
     Image obsWindow;
+    int iteXPos;
+    int iteYPos;
+    int iteWidth;
+    int iteHeight;
     
-	private String brickLOC = "file:Obstacle.gif";
-	private Image brick = new Image(brickLOC);
-	
     /*Constructor */
     public Obstacle(){
         this.setXPos();
@@ -22,13 +22,13 @@ public class Obstacle extends Item {
         
     }
     
-    //Constructor that allows the creation of an obstacle with a custom shape 
+    // Constructor that allows the creation of an obstacle with a custom shape 
     public Obstacle(int anX, int anY, int anW, int anH){
         this.iteXPos = anX;
         this.iteYPos = anY;
         this.iteWidth = anW;
         this.iteHeight = anH;
-	}
+    }
         
     
     
@@ -36,37 +36,37 @@ public class Obstacle extends Item {
      10 pix of section are given to where potential collectibles will be placed for the x-coordinate*/
     
     public void setXPos(){
-        xDefine = rand.nextInt(8 - 1) + 1;
+        xDefine = rand.nextInt(8) + 1;
         if (xDefine == 1) {
-            iteXPos = rand.nextInt(80-9) + 9;
+            iteXPos = rand.nextInt(80-20) + 10;
         }
         
         if (xDefine == 2) {
-            iteXPos = rand.nextInt(180-119) + 119;
+            iteXPos = rand.nextInt(180-120) + 120;
         }
         
         if (xDefine == 3) {
-            iteXPos = rand.nextInt(280-219) + 219;
+            iteXPos = rand.nextInt(280-220) + 220;
         }
         
         if (xDefine == 4) {
-            iteXPos = rand.nextInt(380-319) + 319;
+            iteXPos = rand.nextInt(380-320) + 320;
         }
         
         if (xDefine == 5) {
-            iteXPos = rand.nextInt(480-419) + 419;
+            iteXPos = rand.nextInt(480-420) + 420;
         }
         
         if (xDefine == 6) {
-            iteXPos = rand.nextInt(580-519) + 519;
+            iteXPos = rand.nextInt(580-520) + 520;
         }
         
         if (xDefine == 7) {
-            iteXPos = rand.nextInt(680-619) + 619;
+            iteXPos = rand.nextInt(680-620) + 620;
         }
         
         if (xDefine == 8) {
-            iteXPos = rand.nextInt(780-719) + 719;
+            iteXPos = rand.nextInt(780-720) + 720;
         }
         
         
@@ -76,7 +76,7 @@ public class Obstacle extends Item {
      10 pix of section are given to where potential collectibles will be placed for the y-coordinate*/
     
     public void setYPos(){
-        yDefine = rand.nextInt(8 -1) + 1;
+        yDefine = rand.nextInt(8) + 1;
         
         if (yDefine == 1) {
             iteYPos = rand.nextInt(80-20) + 20;
@@ -114,14 +114,22 @@ public class Obstacle extends Item {
      
     /* Change the width of the obstacle(s) */
     public void setWidth(){
-        iteWidth = rand.nextInt(100 - 30) + 30;
+        iteWidth = rand.nextInt(30) + 15;
 
+    }
+    
+    public int getWidth() {
+    		return iteWidth;
+    }
+    
+    public int getHeight() {
+		return iteHeight;
     }
     
     
     /* Change the height of the obstacle(s) */
     public void setHeight(){
-        iteHeight = rand.nextInt(100 - 30) + 30;
+        iteHeight = rand.nextInt(30) + 15;
         
     }
     
@@ -130,7 +138,6 @@ public class Obstacle extends Item {
 	 */
 	public Rectangle getObs(){
 		Rectangle obsRect = new Rectangle(iteXPos, iteYPos, iteWidth, iteHeight);
-		obsRect.setFill(new ImagePattern(brick, 0, 0, 40, 40, false));
 		return obsRect;
         
     }

@@ -1,8 +1,8 @@
+import java.util.ConcurrentModificationException;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
-import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.scene.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -10,54 +10,21 @@ import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Level2 extends Application {
+public class Level2 extends LevelActions {
 
-	private static final int TILE_SIZE = 10;
-	private static final double PLAYER_SIZE = 9.99;
-	private static final int APP_W = 800;
-	private static final int APP_H = 800;
-	long timeStart;
-	long timeEnd;
-	private Direction direction = Direction.DOWN;
-	private boolean moved = false;
-	private boolean running = false;
-	private double difficulty = 0.1;	
-	private Timeline timeline = new Timeline();
-	private ObservableList<Node> snake;
-	private Stage primaryStage = new Stage();
-	private Stage primaryStage2 = new Stage();
-
-	
-	public void restartGame() {
-		stopGame();
-		startGame();
-	}
-	
-	public void stopGame() {
-		timeEnd = TimerS.getTime();
-		running = false;
-		timeline.stop();
-		snake.clear();
-		System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
-	}
-	
-	/*
-	 * puts the snake back to the top left of the screen to start again
-	 */
-	public void startGame() {
-		timeStart = TimerS.getTime();
-		direction = Direction.RIGHT;
-		Rectangle head = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
-		head.setFill(Color.rgb(241, 249, 12));
-		snake.add(head);
-		timeline.play();
-		running = true;
-	}
-	
 	/*
 	 * responsible for moving the snake head
 	 */
-	public Scene run() {
+	/*public Scene run() {
+		
+		
+		return scene;
+	
+	}*/
+
+	@Override
+	public void start(Stage primaryStage){
+		try {
 		Pane root = new Pane();
 		root.setStyle("-fx-background-image: url(Pane.png);");
 		root.setPrefSize(APP_W, APP_H);
@@ -101,7 +68,7 @@ public class Level2 extends Application {
 		root.getChildren().add(topBorder);
 		root.getChildren().add(col);
 		
-		KeyFrame frame = new KeyFrame(Duration.seconds(difficulty), event ->{
+		KeyFrame frame = new KeyFrame(Duration.seconds(Difficulty.getDifficulty()), event ->{
 			if (!running)
 				return;
 			
@@ -130,11 +97,11 @@ public class Level2 extends Application {
 			if (toRemove)
 				snake.add(0, tail);
 			moved = true;
-			for (Node rect: snake) {				
+			/*for (Node rect: snake) {				
 				if (rect != tail && tailX == rect.getTranslateX() && tailY == rect.getTranslateY()) {
 					restartGame();
 				}
-			}
+			}*/
 			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
 					snakeBody.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
 					snakeBody.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
@@ -143,13 +110,9 @@ public class Level2 extends Application {
 				//System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
 			}
 			
-			/*if (snakeBody.getBoundsInParent().intersects(slamDOWN.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(slamUP.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(slamDOWN1.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(slamUP1.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(slamMID.getBoundsInParent())) {
-				restartGame();
-				//System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
+			if (snakeBody.getBoundsInParent().intersects(big.getBoundsInParent()) ||
+					snakeBody.getBoundsInParent().intersects(center.getBoundsInParent())) {
+				endGame();
 			}
 			
 			/* collision with collectible */
@@ -183,13 +146,13 @@ public class Level2 extends Application {
 				restartGame();
 			}*/
 			
-			if (Score.getScore() == 2) {
-				System.out.println("Yes");
-				Level3 level3 = new Level3();
-				primaryStage2.setScene(level3.run());
-				primaryStage2.show();
-				level3.startGame();
-				this.start(primaryStage);
+			if (Score.getScore() == score + 1) {
+				primaryStage.close();
+				timeline.stop();
+				Level3 level2 = new Level3();
+				level2.start(primaryStage);
+				level2.stopGame();
+				level2.startGame();
 				
 			}
 
@@ -229,17 +192,15 @@ public class Level2 extends Application {
 		
 		moved = false;	
 	});
-		
-		return scene;
-	
-	}
-
-	@Override
-	public void start(Stage primaryStage){
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Snake");
-		primaryStage.setScene(run());
+		primaryStage.setScene(scene);
 		primaryStage.show();
 		startGame();	
 	}
+		catch (ConcurrentModificationException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
 }
