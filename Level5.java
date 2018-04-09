@@ -7,6 +7,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -19,26 +21,33 @@ public class Level5 extends Application implements FrameKey {
 	private static final int rad = 1;
 	private static final int MID = 400;
 	private static final int LEN = 100;
-	private static final int CELL, TILE_SIZE = 20;
+	private static final int CELL = 20;
+	private static final int TILE_SIZE = 10;
+	private static final double APP_W = MID*2;
+	private static final double APP_H = MID*2;
+	private int score;
+	private int score_final;
+	private Label scoreLabel = new Label();
 	private static boolean moved = false;
 	private boolean running = false;
 	private double difficulty = 0.1;
-	boolean collision = false;
 	private Timeline timeline = new Timeline();
 	Snake obj = new Snake();
 	private ObservableList<Node> snake = obj.getSnake();
-
-	// TODO Auto-generated constructor stub
-	// Object types of polygons that spin in a circular motion
 	Direction direction;
+	boolean collision = false;
 	
 	
+	// Object types of polygons that spin in a circular motion	
 	public Parent createContent() {
 		Pane pane = new Pane();
 		pane.setStyle("-fx-background-image: url(Pane.png);");
+		
 		Group snakeBody = obj.getSnakeBody();
 		snake = snakeBody.getChildren();
 		
+		Collectible aCol = new Collectible();
+		Rectangle col = aCol.getCol();
 		Polygon poly1 = new Polygon(MID,LEN,MID+CELL,(LEN*2)-CELL,LEN+MID,LEN*2,MID+CELL,(LEN*2)+CELL,MID,MID-LEN,MID-CELL,(LEN*2)+CELL,MID-LEN,LEN*2,MID-CELL,(LEN*2)-CELL,MID,LEN);
 		Polygon poly2 = new Polygon(MID,LEN,MID+CELL,(LEN*2)-CELL,LEN+MID,LEN*2,MID+CELL,(LEN*2)+CELL,MID,MID-LEN,MID-CELL,(LEN*2)+CELL,MID-LEN,LEN*2,MID-CELL,(LEN*2)-CELL,MID,LEN);
 		Polygon poly3 = new Polygon(MID,LEN,MID+CELL,(LEN*2)-CELL,LEN+MID,LEN*2,MID+CELL,(LEN*2)+CELL,MID,MID-LEN,MID-CELL,(LEN*2)+CELL,MID-LEN,LEN*2,MID-CELL,(LEN*2)-CELL,MID,LEN);
@@ -79,13 +88,13 @@ public class Level5 extends Application implements FrameKey {
 		trans4.setCycleCount(PathTransition.INDEFINITE);
 		trans4.play();
 		
-		pane.getChildren().addAll(poly4,poly3,poly2,poly1);
+		pane.getChildren().add(snakeBody);
+		pane.getChildren().addAll(poly4,poly3,poly2,poly1,col);
 		
 		KeyFrame frame = new KeyFrame(Duration.seconds(difficulty), event ->{
-			if (!running && !collision)
+			if (!running)
 				return;
-			
-			
+	
 			// checks if the snake has more than one block if yes then it removes the last block that
 			// and that becomes the tail if not the head becomes the tail.
 			boolean toRemove = snake.size()>1;
@@ -113,9 +122,7 @@ public class Level5 extends Application implements FrameKey {
 					tail.setTranslateX(snake.get(0).getTranslateX() + TILE_SIZE);
 					tail.setTranslateY(snake.get(0).getTranslateY() );
 			}
-			
 			moved = true;
-			
 			if (toRemove)
 				snake.add(0, tail);
 			
@@ -135,13 +142,12 @@ public class Level5 extends Application implements FrameKey {
 			}
 			
 			/* collision with obstacle and wall and fan*/
-			if (tail.getBoundsInParent().intersects(obs.getBoundsInLocal()) || tail.getBoundsInParent().intersects(wall.getWall1().getBoundsInLocal())
-					|| tail.getBoundsInParent().intersects(wall.getWall2().getBoundsInLocal())
-					||tail.getBoundsInParent().intersects(wall.getWall3().getBoundsInLocal()) ||
-					tail.getBoundsInParent().intersects(fan.getBoundsInParent())){
+			if (tail.getBoundsInParent().intersects(poly1.getBoundsInParent()) || tail.getBoundsInParent().intersects(poly2.getBoundsInParent())
+					|| tail.getBoundsInParent().intersects(poly2.getBoundsInParent())
+					||tail.getBoundsInParent().intersects(poly3.getBoundsInParent()) ||
+					tail.getBoundsInParent().intersects(poly4.getBoundsInParent())){
 //				System.exit(0);
 				collision = true;
-				
 			}
 			
 			/* collision with collectible */
@@ -150,55 +156,80 @@ public class Level5 extends Application implements FrameKey {
 				aCol.setYPos();
 				col.relocate(aCol.getXPos(), aCol.getYPos());       
 				col.getBoundsInParent();
-				root.getChildren().remove(col);
-				root.getChildren().add(col);
+				pane.getChildren().remove(col);
+				pane.getChildren().add(col);
 				
+//				Increases the size of the snake.
 				Rectangle rect = new Rectangle(TILE_SIZE, TILE_SIZE);
 				rect.setFill(Color.rgb(241, 249, 12));
 				rect.setTranslateX(tailX);
 				rect.setTranslateY(tailY);
-				
 				snake.add(rect);
 	
 				score += 1;
-				scoreshow = "Your Current Score is "+score;
-				scoreLabel.setText(scoreshow);
+				scoreLabel.setText("Your Current Score is "+score);
 				scoreLabel.setTextFill(Color.RED);
-				
 				scoreLabel.setLayoutX(APP_W-150);
 				scoreLabel.setLayoutY(APP_H-50);
-				root.getChildren().add(scoreLabel);
 			}
 			
+			if (collision) {
+				timeline.stop();
+				score_final = score;
+				Group restartPage = new Group();
+				Button butt = new Button("Play Again?");
+				butt.setLayoutX(100);
+				butt.setLayoutY(150);
+				Label lab = new Label("Your Final Score is "+ score_final);
+				lab.setLayoutX(10);
+				lab.setLayoutY(200/2);
+				restartPage.getChildren().add(butt);
+				restartPage.getChildren().add(lab);
+				Scene newScene = new Scene(restartPage, 200,200, Color.RED);
+				Stage stage = new Stage();
+				stage.setScene(newScene);
+				stage.show();
+				collision = false;
+				butt.setOnAction(e -> {
+//					startGame();
+					stage.close();
+					timeline.play();
+				});
+				
+			
+			}
 		});
 		
+		pane.getChildren().add(scoreLabel);
 		timeline.getKeyFrames().add(frame);
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		return pane;
 	}
 	
+
 	public void restartGame() {
 		stopGame();
 		startGame();
 	}
 	
+
 	public void stopGame() {
 		running = false;
 		timeline.stop();
 		snake.clear();
 	}
 	
-	@Override
+
 	public void startGame() {
 		direction = Direction.RIGHT;
-		Rectangle head = new Rectangle(CELL,CELL);
+		Rectangle head = new Rectangle(TILE_SIZE,TILE_SIZE);
 		head.setFill(Color.rgb(241, 249, 12));
 		snake.add(head);
 		timeline.play();
 		running = true;
 	}
 	
-	@Override
+
 	public Scene run() {
 		Scene scene = new Scene(createContent(), MID*2, MID*2);
 		scene.setOnKeyPressed(event -> {
@@ -231,14 +262,14 @@ public class Level5 extends Application implements FrameKey {
 		return scene;
 	}
 	
-	@Override
+
 	public void start(Stage primaryStage) {
-		primaryStage.setScene(this.run());
 		primaryStage.setTitle("Snake");
+		primaryStage.setScene(this.run());
 		primaryStage.show();
 		startGame();
 	}
-
+	
 	public static void main(String[] args) {
 		launch(args);
 	
