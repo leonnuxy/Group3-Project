@@ -1,4 +1,3 @@
-
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -6,6 +5,9 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 
 public abstract class LevelActions extends Application {
 	
@@ -27,6 +29,12 @@ public abstract class LevelActions extends Application {
 	Rectangle head = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
 	protected static boolean twoplayermode = false;
 	protected ObservableList<Node> snake2;
+	protected int scoreChange = 1;
+	
+	//Collectible sound effect
+	protected String collectSoundFile = "collectSound.mp3";     
+	protected Media collectSoundMedia = new Media(new File(collectSoundFile).toURI().toString());
+	
 
 	public LevelActions() {
 		super();
