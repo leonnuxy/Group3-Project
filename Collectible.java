@@ -14,7 +14,7 @@ public class Collectible extends Item {
     public Collectible(){
         this.setXPos();
         this.setYPos();
-        //setImageName("Collectible.png");
+        setImageName("Collectible.png");
     }
     
     /* Constructor to purposefully place a collectible */

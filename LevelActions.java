@@ -1,3 +1,4 @@
+
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -5,9 +6,6 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import java.io.File;
 
 public abstract class LevelActions extends Application {
 	
@@ -22,19 +20,17 @@ public abstract class LevelActions extends Application {
 	protected boolean moved = false;
 	protected boolean running = false;
 	protected double difficulty = Difficulty.getDifficulty();
-	protected Timeline timeline = new Timeline();
+	protected static Timeline timeline = new Timeline();
 	protected ObservableList<Node> snake;
-	protected Stage primaryStage = new Stage();
+	protected static Stage primaryStage = new Stage();
 	protected Stage primaryStage2 = new Stage();
 	Rectangle head = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
 	protected static boolean twoplayermode = false;
 	protected ObservableList<Node> snake2;
-	protected int scoreChange = 1;
-	
-	//Collectible sound effect
-	protected String collectSoundFile = "collectSound.mp3";     
-	protected Media collectSoundMedia = new Media(new File(collectSoundFile).toURI().toString());
-	
+	protected Direction direction2 = Direction.DOWN;
+	protected boolean moved2 = false;
+	protected int scoreChange = 10;
+	protected boolean toRemove2;
 
 	public LevelActions() {
 		super();
@@ -44,28 +40,33 @@ public abstract class LevelActions extends Application {
 		stopGame();
 		startGame();
 	}
-
+	
 	public void stopGame() {
-		//timeEnd = TimerS.getTime();
 		running = false;
 		timeline.stop();
 		snake.clear();
-		//primaryStage.close();
-		
+		snake2.clear();
 		//System.out.println("Time Elapsed: " + TimerS.getTotalTime());
 	}
-
+	
+	/*
+	 * puts the snake back to the top left of the screen to start again
+	 */
 	public void startGame() {
-		//timeStart = TimerS.getTime();
 		direction = Direction.RIGHT;
+		direction2 = Direction.DOWN;
+		Rectangle head2 = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
 		head.setFill(Color.rgb(241, 249, 12));
+		head2.setFill(Color.rgb(0, 0, 0));
+		head2.setLayoutY(40);
 		snake.add(head);
-		this.timeline.play();
+		snake2.add(head2);
+		timeline.play();
 		this.running = true;	
 	}
 	//public abstract Scene run();
 	
-	public void endGame() {
+	public static void endGame() {
 		timeline.stop();
 		primaryStage.close();
 		System.out.println("You win.");

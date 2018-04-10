@@ -14,9 +14,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import java.io.File;
 
 		
 public class Level5 extends LevelActions{
@@ -32,41 +29,6 @@ public class Level5 extends LevelActions{
 	private static final int TILE_SIZE = 10;
 	boolean collision = false;
 	private final double height = 20;
-	
-	private Direction direction2 = Direction.DOWN;
-	private boolean moved2 = false;
-	private ObservableList<Node> snake2;
-	boolean toRemove2;
-	
-	public void restartGame() {
-		stopGame();
-		startGame();
-	}
-	
-	public void stopGame() {
-		running = false;
-		timeline.stop();
-		snake.clear();
-		snake2.clear();
-		//System.out.println("Time Elapsed: " + TimerS.getTotalTime());
-	}
-	
-	/*
-	 * puts the snake back to the top left of the screen to start again
-	 */
-	public void startGame() {
-		direction = Direction.RIGHT;
-		direction2 = Direction.DOWN;
-		Rectangle head2 = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
-		head2.setFill(Color.rgb(0,0,0));
-		head.setFill(Color.rgb(241, 249, 12));
-		head2.setLayoutY(40);
-		snake.add(head);
-		snake2.add(head2);
-		timeline.play();
-		running = true;
-	}
-	
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -129,10 +91,8 @@ public class Level5 extends LevelActions{
 			
 			double tailX = tail.getTranslateX();
 			double tailY = tail.getTranslateY();
-			if (twoplayermode) {
-				double tail2X = tail2.getTranslateX();
-				double tail2Y = tail2.getTranslateY();
-			}
+			double tail2X = tail2.getTranslateX();
+			double tail2Y = tail2.getTranslateY();
 			
 			switch (direction) {
 				case UP:
@@ -180,60 +140,17 @@ public class Level5 extends LevelActions{
 			
 			moved2 = true;
 			}
-			for (Node rect: snake) {				
-				if (rect != tail && tailX == rect.getTranslateX() && tailY == rect.getTranslateY()) {
-					restartGame();
-				}
-			}
-			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
-					snakeBody.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
-				endGame();
-				//System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
-			}
 			
-			if (snakeBody2.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
-					snakeBody2.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
-					snakeBody2.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
-					snakeBody2.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
-				endGame();
-			}
-			
-			if (snakeBody.getBoundsInParent().intersects(fan.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(wall1.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(wall2.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(wall3.getBoundsInParent()) ||
-					snakeBody2.getBoundsInParent().intersects(fan.getBoundsInParent()) ||
-					snakeBody2.getBoundsInParent().intersects(wall1.getBoundsInParent()) ||
-					snakeBody2.getBoundsInParent().intersects(wall2.getBoundsInParent()) ||
-					snakeBody2.getBoundsInParent().intersects(wall3.getBoundsInParent())) {
-				endGame();
-			}
-			
+			Collisions.selfCollision(snake, tail, tailX, tailY);
+			Collisions.selfCollision(snake2, tail2, tail2X, tail2Y);
+			Collisions.borderCollisions(snakeBody, topBorder, bottomBorder, leftBorder, rightBorder);
+			Collisions.borderCollisions(snakeBody2, topBorder, bottomBorder, leftBorder, rightBorder);
+			Collisions.Level5SpecificCollisions(snakeBody, fan, wall1, wall2, wall3, aCol, col, root);
+			Collisions.Level5SpecificCollisions(snakeBody2, fan, wall1, wall2, wall3, aCol, col, root);
+			Collisions.collectibleCollision(tail, tail2, col, aCol, root, tailX, tailY, snake, TILE_SIZE);
+			Collisions.snakesCollide(tail, tail2);
 			/* collision with collectible */
-			if (tail.getBoundsInParent().intersects(col.getBoundsInParent()) ||
-				tail2.getBoundsInParent().intersects(col.getBoundsInParent())){
-				
-				//Collectible sound effect played
-				MediaPlayer collectSoundPlayer = new MediaPlayer(collectSoundMedia);
-				collectSoundPlayer.play();
-				
-				aCol.setXPos();
-				aCol.setYPos();
-				col.relocate(aCol.getXPos(), aCol.getYPos());       
-				col.getBoundsInParent();
-				root.getChildren().remove(col);
-				root.getChildren().add(col);
-				
-				Rectangle rect = new Rectangle(TILE_SIZE, TILE_SIZE);
-				rect.setFill(Color.rgb(241, 249, 12));
-				rect.setTranslateX(tailX);
-				rect.setTranslateY(tailY);
-				Score.setScore(1);
-				snake.add(rect);
-	
-			}
+			
 			
 			if (Score.getScore() == score + scoreChange) {
 				Difficulty.changeDifficulty(0.01);

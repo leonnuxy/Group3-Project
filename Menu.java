@@ -192,7 +192,6 @@ public class Menu extends Application{
 				Level game = new Level();
 				TimerS.setStartTime();
 				game.start(primaryStage);
-				TimerS.setStartTime();
 				MediaPlayer buttonSoundPlayer = new MediaPlayer(buttonSoundMedia);
 				buttonSoundPlayer.play();
 			
