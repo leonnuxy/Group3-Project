@@ -15,7 +15,7 @@ public class Collisions {
 				snakeBody.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
 				snakeBody.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
 				snakeBody.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
-			LevelActions.endGame();
+			LevelActions.endGame = true;
 		}
 	}
 	
@@ -26,7 +26,7 @@ public class Collisions {
 				snakeBody.getBoundsInParent().intersects(slamDOWN1.getBoundsInParent()) ||
 				snakeBody.getBoundsInParent().intersects(slamUP1.getBoundsInParent()) ||
 				snakeBody.getBoundsInParent().intersects(slamMID.getBoundsInParent())) {
-			LevelActions.endGame();
+			LevelActions.endGame = true;
 		}
 		if (col.getBoundsInParent().intersects(slamDOWN.getBoundsInParent()) ||
 				col.getBoundsInParent().intersects(slamUP.getBoundsInParent()) ||
@@ -45,7 +45,7 @@ public class Collisions {
 	public static void Level2SpecificCollisions(Group snakeBody, Circle big, Polygon center, Collectible aCol, Rectangle col, Pane root) {
 		if (snakeBody.getBoundsInParent().intersects(big.getBoundsInParent()) || 
 				snakeBody.getBoundsInParent().intersects(center.getBoundsInParent())) {
-			LevelActions.endGame();
+			LevelActions.endGame = true;
 		}
 		if (col.getBoundsInParent().intersects(big.getBoundsInParent()) ||
 				col.getBoundsInParent().intersects(center.getBoundsInParent())) {
@@ -68,7 +68,7 @@ public class Collisions {
 				snakeBody.getBoundsInParent().intersects(rectBottRight.getBoundsInParent()) ||
 				snakeBody.getBoundsInParent().intersects(rectBottLeft.getBoundsInParent()) ||
 				snakeBody.getBoundsInParent().intersects(rectTopRight.getBoundsInParent())) {
-			LevelActions.endGame();
+			LevelActions.endGame = true;
 		}
 		if (col.getBoundsInParent().intersects(rectTop.getBoundsInParent()) ||
 				col.getBoundsInParent().intersects(rectCen.getBoundsInParent()) ||
@@ -93,7 +93,7 @@ public class Collisions {
 				snakeBody.getBoundsInParent().intersects(poly2.getBoundsInParent()) ||
 				snakeBody.getBoundsInParent().intersects(poly3.getBoundsInParent()) ||
 				snakeBody.getBoundsInParent().intersects(poly4.getBoundsInParent())) {
-			LevelActions.endGame();
+			LevelActions.endGame = true;
 		}
 		if (col.getBoundsInParent().intersects(poly1.getBoundsInParent()) ||
 				col.getBoundsInParent().intersects(poly2.getBoundsInParent()) ||
@@ -114,7 +114,7 @@ public class Collisions {
 				snakeBody.getBoundsInParent().intersects(wall1.getBoundsInParent()) ||
 				snakeBody.getBoundsInParent().intersects(wall2.getBoundsInParent()) ||
 				snakeBody.getBoundsInParent().intersects(wall3.getBoundsInParent())) {
-			LevelActions.endGame();
+			LevelActions.endGame = true;
 		}
 		if (col.getBoundsInParent().intersects(fan.getBoundsInParent()) ||
 				col.getBoundsInParent().intersects(wall1.getBoundsInParent()) ||
@@ -152,14 +152,14 @@ public class Collisions {
 	
 	public static void snakesCollide(Node tail, Node tail2) {
 		if (tail.getBoundsInParent().intersects(tail2.getBoundsInParent())) {
-			LevelActions.endGame();
+			LevelActions.endGame = true;
 		}
 	}
 	
 	public static void selfCollision(ObservableList<Node> snake, Node tail, double tailX, double tailY) {
 		for (Node rect: snake) {				
 			if (rect != tail && tailX == rect.getTranslateX() && tailY == rect.getTranslateY()) {
-				LevelActions.endGame();
+				LevelActions.endGame = true;
 			}
 		}
 	}

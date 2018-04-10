@@ -149,7 +149,9 @@ public class Level5 extends LevelActions{
 			Collisions.Level5SpecificCollisions(snakeBody2, fan, wall1, wall2, wall3, aCol, col, root);
 			Collisions.collectibleCollision(tail, tail2, col, aCol, root, tailX, tailY, snake, TILE_SIZE);
 			Collisions.snakesCollide(tail, tail2);
-			/* collision with collectible */
+			if (LevelActions.endGame) {
+				endGame();
+			}
 			
 			
 			if (Score.getScore() == score + scoreChange) {

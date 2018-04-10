@@ -168,9 +168,11 @@ public class Level4 extends LevelActions {
 			Collisions.borderCollisions(snakeBody2, topBorder, bottomBorder, leftBorder, rightBorder);
 			Collisions.Level4SpecificCollisions(snakeBody, poly1, poly2, poly3, poly4, aCol, col, root);
 			Collisions.Level4SpecificCollisions(snakeBody2, poly1, poly2, poly3, poly4, aCol, col, root);
-			/* collision with collectible */
 			Collisions.collectibleCollision(tail, tail2, col, aCol, root, tailX, tailY, snake, LEN);
 			Collisions.snakesCollide(tail, tail2);
+			if (LevelActions.endGame) {
+				endGame();
+			}
 			
 			if (Score.getScore() == score + scoreChange) {
 				primaryStage.close();

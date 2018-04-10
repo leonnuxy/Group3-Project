@@ -208,13 +208,16 @@ public class Level extends LevelActions {
 			Collisions.Level1SpecificCollisions(snakeBody2, slamUP, slamDOWN, slamDOWN1, slamUP1, slamMID, aCol, col, root);
 			Collisions.collectibleCollision(tail, tail2, col, aCol, root, tailX, tailY, snake, TILE_SIZE);
 			Collisions.snakesCollide(tail, tail2);
+			if (LevelActions.endGame) {
+				endGame();
+			}
 			
 			
 			if (Score.getScore() == score + scoreChange) {
-				primaryStage.close();
+				super.primaryStage.close();
 				timeline.stop();
 				Level2 level2 = new Level2();
-				level2.start(primaryStage);
+				level2.start(super.primaryStage);
 				level2.stopGame();
 				level2.startGame();
 			}

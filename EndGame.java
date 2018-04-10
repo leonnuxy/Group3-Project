@@ -1,4 +1,3 @@
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -29,7 +28,6 @@ public class EndGame extends Application{
 		butt.setOnAction(e -> {
 			primaryStage.close();
 			Menu menu = new Menu();
-			LevelActions.timeline = new Timeline();
 			menu.start(primaryStage);
 		});
 		

@@ -32,7 +32,7 @@ public class Menu extends Application{
 		Scene settingsScene = new Scene(settingsPane, 800, 800);
 		
 		//Menu BGM
-		String menuBGMFile = "menuBGM.mp3";     
+		/*String menuBGMFile = "menuBGM.mp3";     
 		Media menuBGMMedia = new Media(new File(menuBGMFile).toURI().toString());
 		MediaPlayer menuBGMPlayer = new MediaPlayer(menuBGMMedia);
 		menuBGMPlayer.play();
@@ -40,7 +40,7 @@ public class Menu extends Application{
 		//ButtonClick SoundEffect
 		String buttonSoundFile = "buttonSound.mp3";     
 		Media buttonSoundMedia = new Media(new File(buttonSoundFile).toURI().toString());
-		
+		*/
 		//create the buttons for menu
 		Button start = new Button("START");
 		Button quit = new Button("QUIT");
@@ -134,8 +134,8 @@ public class Menu extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 			primaryStage.setScene(settingsScene);
-			MediaPlayer buttonSoundPlayer = new MediaPlayer(buttonSoundMedia);
-			buttonSoundPlayer.play();
+			//MediaPlayer buttonSoundPlayer = new MediaPlayer(buttonSoundMedia);
+			//buttonSoundPlayer.play();
 
 			}
 		}
@@ -147,8 +147,8 @@ public class Menu extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 			primaryStage.setScene(menuScene);
-			MediaPlayer buttonSoundPlayer = new MediaPlayer(buttonSoundMedia);
-			buttonSoundPlayer.play();
+			//MediaPlayer buttonSoundPlayer = new MediaPlayer(buttonSoundMedia);
+			//buttonSoundPlayer.play();
 
 			}
 		}
@@ -162,8 +162,8 @@ public class Menu extends Application{
 				Level game = new Level();
 				TimerS.setStartTime();
 				game.start(primaryStage);
-				MediaPlayer buttonSoundPlayer = new MediaPlayer(buttonSoundMedia);
-				buttonSoundPlayer.play();
+				//MediaPlayer buttonSoundPlayer = new MediaPlayer(buttonSoundMedia);
+				//buttonSoundPlayer.play();
 
 			}
 		}
@@ -177,8 +177,8 @@ public class Menu extends Application{
 				Level game = new Level();
 				game.start(primaryStage);
 				TimerS.setStartTime();
-				MediaPlayer buttonSoundPlayer = new MediaPlayer(buttonSoundMedia);
-				buttonSoundPlayer.play();
+				//MediaPlayer buttonSoundPlayer = new MediaPlayer(buttonSoundMedia);
+				//buttonSoundPlayer.play();
 			
 			}
 		}
@@ -192,8 +192,8 @@ public class Menu extends Application{
 				Level game = new Level();
 				TimerS.setStartTime();
 				game.start(primaryStage);
-				MediaPlayer buttonSoundPlayer = new MediaPlayer(buttonSoundMedia);
-				buttonSoundPlayer.play();
+				//MediaPlayer buttonSoundPlayer = new MediaPlayer(buttonSoundMedia);
+				//buttonSoundPlayer.play();
 			
 			}
 		}

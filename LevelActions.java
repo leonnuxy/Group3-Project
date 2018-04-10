@@ -20,17 +20,18 @@ public abstract class LevelActions extends Application {
 	protected boolean moved = false;
 	protected boolean running = false;
 	protected double difficulty = Difficulty.getDifficulty();
-	protected static Timeline timeline = new Timeline();
+	protected Timeline timeline = new Timeline();
 	protected ObservableList<Node> snake;
-	protected static Stage primaryStage = new Stage();
+	protected Stage primaryStage = new Stage();
 	protected Stage primaryStage2 = new Stage();
 	Rectangle head = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
 	protected static boolean twoplayermode = false;
 	protected ObservableList<Node> snake2;
 	protected Direction direction2 = Direction.DOWN;
 	protected boolean moved2 = false;
-	protected int scoreChange = 10;
+	protected int scoreChange = 1;
 	protected boolean toRemove2;
+	public static boolean endGame = false;
 
 	public LevelActions() {
 		super();
@@ -61,12 +62,14 @@ public abstract class LevelActions extends Application {
 		head2.setLayoutY(40);
 		snake.add(head);
 		snake2.add(head2);
+		endGame = false;
+		twoplayermode = false;
 		timeline.play();
-		this.running = true;	
+		running = true;	
 	}
 	//public abstract Scene run();
 	
-	public static void endGame() {
+	public void endGame() {
 		timeline.stop();
 		primaryStage.close();
 		System.out.println("You win.");

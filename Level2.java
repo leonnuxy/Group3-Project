@@ -149,6 +149,9 @@ public class Level2 extends LevelActions {
 			Collisions.Level2SpecificCollisions(snakeBody2, big, center, aCol, col, root);
 			Collisions.collectibleCollision(tail, tail2, col, aCol, root, tailX, tailY, snake, TILE_SIZE);
 			Collisions.snakesCollide(tail, tail2);
+			if (LevelActions.endGame) {
+				endGame();
+			}
 			
 			if (Score.getScore() == score + scoreChange) {
 				primaryStage.close();
@@ -224,36 +227,6 @@ public class Level2 extends LevelActions {
 		
 		moved2 = false;
 			}
-		
-		/*if (LevelActions.twoplayermode) {
-			if (!moved2)
-				return;
-
-			if (moved2) {
-			switch (event.getCode()) {
-				case W:
-					if (direction2 != Direction.DOWN)
-						direction2 = Direction. UP;
-					break;
-				case S:
-					if (direction2 != Direction.UP)
-						direction2 = Direction.DOWN;
-					break;
-				case A:
-					if (direction2 != Direction.RIGHT)
-						direction2 = Direction.LEFT;
-					break;
-				case D:
-					if (direction2 != Direction.LEFT)
-						direction2 = Direction.RIGHT;
-					break;
-			default:
-				break;
-			}
-		}
-		
-		moved2 = false;
-			}*/
 	});
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Snake");

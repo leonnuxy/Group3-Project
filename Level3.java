@@ -162,9 +162,11 @@ public class Level3 extends LevelActions {
 			Collisions.borderCollisions(snakeBody2, topBorder, bottomBorder, leftBorder, rightBorder);
 			Collisions.Level3SpecificCollisions(snakeBody, rectTop, rectCen, rectBott, rectRight, rectLeft, rectBottRight, rectBottLeft, rectTopRight, aCol, col, root);
 			Collisions.Level3SpecificCollisions(snakeBody2, rectTop, rectCen, rectBott, rectRight, rectLeft, rectBottRight, rectBottLeft, rectTopRight, aCol, col, root);
-			/* collision with collectible */
 			Collisions.collectibleCollision(tail, tail2, col, aCol, root, tailX, tailY, snake, TILE_SIZE);
 			Collisions.snakesCollide(tail, tail2);
+			if (LevelActions.endGame) {
+				endGame();
+			}
 			
 			if (Score.getScore() == score + scoreChange) {
 				primaryStage.close();
