@@ -12,7 +12,15 @@ public class Difficulty {
 	}
 	
 	public static void changeDifficulty(double x) {
-		difficulty += x;
+		if (difficulty <= 0.045) {
+			
+		}
+		if (LevelActions.twoplayermode == true) {
+			difficulty -= x;
+		}
+		else {
+			difficulty -= x;
+		}
 	}
 	
 }

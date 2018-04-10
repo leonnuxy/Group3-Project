@@ -3,6 +3,7 @@ import java.util.ConcurrentModificationException;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -22,6 +23,40 @@ public class Level4 extends LevelActions {
 	private int LEN = 100;
 	private int CELL = 20;
 	boolean collision = false;
+	
+	private Direction direction2 = Direction.DOWN;
+	private boolean moved2 = false;
+	private ObservableList<Node> snake2;
+	boolean toRemove2;
+	
+	public void restartGame() {
+		stopGame();
+		startGame();
+	}
+	
+	public void stopGame() {
+		running = false;
+		timeline.stop();
+		snake.clear();
+		snake2.clear();
+		//System.out.println("Time Elapsed: " + TimerS.getTotalTime());
+	}
+	
+	/*
+	 * puts the snake back to the top left of the screen to start again
+	 */
+	public void startGame() {
+		direction = Direction.RIGHT;
+		direction2 = Direction.DOWN;
+		Rectangle head2 = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
+		head2.setFill(Color.rgb(0,0,0));
+		head.setFill(Color.rgb(241, 249, 12));
+		head2.setLayoutY(40);
+		snake.add(head);
+		snake2.add(head2);
+		timeline.play();
+		running = true;
+	}
 	
 	@Override
 	public void start(Stage primaryStage){
@@ -71,7 +106,10 @@ public class Level4 extends LevelActions {
 		trans4.play();
 		
 		root.getChildren().addAll(poly4,poly3,poly2,poly1);
-
+		
+		
+		Group snakeBody2 = new Group();
+		snake2 = snakeBody2.getChildren();
 		
 		Group snakeBody = new Group();
 		snake = snakeBody.getChildren();
@@ -85,6 +123,9 @@ public class Level4 extends LevelActions {
 		Rectangle bottomBorder = borderBottom.getObs();
 		Obstacle borderTop = new Obstacle(0,-2,800,1);
 		Rectangle topBorder = borderTop.getObs();
+		if (twoplayermode) {
+			root.getChildren().add(snakeBody2);
+		}
 		root.getChildren().add(snakeBody);
 		root.getChildren().add(rightBorder);
 		root.getChildren().add(leftBorder);
@@ -95,11 +136,20 @@ public class Level4 extends LevelActions {
 		KeyFrame frame = new KeyFrame(Duration.seconds(Difficulty.getDifficulty()), event ->{
 			if (!running)
 				return;
-			
+
 			boolean toRemove = snake.size()>1;
+			boolean toRemove2 = snake2.size()>1;
+			
 			Node tail = toRemove ? snake.remove(snake.size()-1) : snake.get(0);
+			Node tail2 = toRemove2 ? snake2.remove(snake2.size()-1) : snake2.get(0);
+			
 			double tailX = tail.getTranslateX();
 			double tailY = tail.getTranslateY();
+			if (twoplayermode) {
+				double tail2X = tail2.getTranslateX();
+				double tail2Y = tail2.getTranslateY();
+			}
+			
 			switch (direction) {
 				case UP:
 					tail.setTranslateX(snake.get(0).getTranslateX());
@@ -121,6 +171,31 @@ public class Level4 extends LevelActions {
 			if (toRemove)
 				snake.add(0, tail);
 			moved = true;
+			
+			if (twoplayermode) {
+				switch (direction2) {
+				case UP:
+					tail2.setTranslateX(snake2.get(0).getTranslateX());
+					tail2.setTranslateY(snake2.get(0).getTranslateY() - TILE_SIZE);
+					break;
+				case DOWN:
+					tail2.setTranslateX(snake2.get(0).getTranslateX());
+					tail2.setTranslateY(snake2.get(0).getTranslateY() + TILE_SIZE);
+					break;
+				case LEFT:
+					tail2.setTranslateX(snake2.get(0).getTranslateX() - TILE_SIZE);
+					tail2.setTranslateY(snake2.get(0).getTranslateY());
+					break;
+				case RIGHT:
+					tail2.setTranslateX(snake2.get(0).getTranslateX() + TILE_SIZE);
+					tail2.setTranslateY(snake2.get(0).getTranslateY() );
+				
+			}
+			if (toRemove2)
+				snake2.add(0, tail2);
+			
+			moved2 = true;
+			}
 			/*for (Node rect: snake) {				
 				if (rect != tail && tailX == rect.getTranslateX() && tailY == rect.getTranslateY()) {
 					restartGame();
@@ -141,14 +216,6 @@ public class Level4 extends LevelActions {
 				endGame();
 			}
 			
-			/*if (snakeBody.getBoundsInParent().intersects(slamDOWN.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(slamUP.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(slamDOWN1.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(slamUP1.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(slamMID.getBoundsInParent())) {
-				restartGame();
-				//System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
-			}
 			
 			/* collision with collectible */
 			if (tail.getBoundsInParent().intersects(col.getBoundsInParent())){
@@ -185,15 +252,13 @@ public class Level4 extends LevelActions {
 			if (Score.getScore() == score + 1) {
 				primaryStage.close();
 				timeline.stop();
-				Level5 level2 = new Level5();
-				level2.start(primaryStage);
-				level2.stopGame();
-				level2.startGame();
+				Level5 game = new Level5();
+				game.start(primaryStage);
+				game.stopGame();
+				game.startGame();
 				
 			}
-
-			
-		});
+			});
 		
 		timeline.getKeyFrames().add(frame);
 		timeline.setCycleCount(Timeline.INDEFINITE);
@@ -227,6 +292,35 @@ public class Level4 extends LevelActions {
 		}
 		
 		moved = false;	
+		if (twoplayermode) {
+			if (!moved2)
+				return;
+
+			if (moved2) {
+			switch (event.getCode()) {
+				case W:
+					if (direction2 != Direction.DOWN)
+						direction2 = Direction. UP;
+					break;
+				case S:
+					if (direction2 != Direction.UP)
+						direction2 = Direction.DOWN;
+					break;
+				case A:
+					if (direction2 != Direction.RIGHT)
+						direction2 = Direction.LEFT;
+					break;
+				case D:
+					if (direction2 != Direction.LEFT)
+						direction2 = Direction.RIGHT;
+					break;
+			default:
+				break;
+			}
+		}
+		
+		moved2 = false;
+		}
 	});
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Snake");

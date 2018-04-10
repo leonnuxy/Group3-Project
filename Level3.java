@@ -2,6 +2,7 @@ import java.util.ConcurrentModificationException;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Group;
@@ -22,11 +23,49 @@ public class Level3 extends LevelActions {
 		return scene;
 	
 	}*/
+	
+	private Direction direction2 = Direction.DOWN;
+	private boolean moved2 = false;
+	private ObservableList<Node> snake2;
+	boolean toRemove2;
+	
+	public void restartGame() {
+		stopGame();
+		startGame();
+	}
+	
+	public void stopGame() {
+		running = false;
+		timeline.stop();
+		snake.clear();
+		snake2.clear();
+		//System.out.println("Time Elapsed: " + TimerS.getTotalTime());
+	}
+	
+	/*
+	 * puts the snake back to the top left of the screen to start again
+	 */
+	public void startGame() {
+		direction = Direction.RIGHT;
+		direction2 = Direction.DOWN;
+		Rectangle head2 = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
+		head2.setFill(Color.rgb(0,0,0));
+		head.setFill(Color.rgb(241, 249, 12));
+		head2.setLayoutY(40);
+		snake.add(head);
+		snake2.add(head2);
+		timeline.play();
+		running = true;
+	}
 
 	@Override
 	public void start(Stage primaryStage){
 		try {
 		Pane root = new Pane();
+		
+		Group snakeBody2 = new Group();
+		snake2 = snakeBody2.getChildren();
+		
 		root.setStyle("-fx-background-image: url(Pane.png);");
 		root.setPrefSize(APP_W, APP_H);
 		
@@ -76,6 +115,9 @@ public class Level3 extends LevelActions {
 		
 		root.getChildren().addAll(rectTop, rectCen, rectBott, 
 				rectRight, rectLeft, rectBottRight, rectBottLeft, rectTopRight);
+		if (twoplayermode) {
+			root.getChildren().add(snakeBody2);
+		}
 		root.getChildren().add(snakeBody);
 		root.getChildren().add(rightBorder);
 		root.getChildren().add(leftBorder);
@@ -86,11 +128,20 @@ public class Level3 extends LevelActions {
 		KeyFrame frame = new KeyFrame(Duration.seconds(Difficulty.getDifficulty()), event ->{
 			if (!running)
 				return;
-			
+
 			boolean toRemove = snake.size()>1;
+			boolean toRemove2 = snake2.size()>1;
+			
 			Node tail = toRemove ? snake.remove(snake.size()-1) : snake.get(0);
+			Node tail2 = toRemove2 ? snake2.remove(snake2.size()-1) : snake2.get(0);
+			
 			double tailX = tail.getTranslateX();
 			double tailY = tail.getTranslateY();
+			if (twoplayermode) {
+				double tail2X = tail2.getTranslateX();
+				double tail2Y = tail2.getTranslateY();
+			}
+			
 			switch (direction) {
 				case UP:
 					tail.setTranslateX(snake.get(0).getTranslateX());
@@ -112,6 +163,31 @@ public class Level3 extends LevelActions {
 			if (toRemove)
 				snake.add(0, tail);
 			moved = true;
+			
+			if (twoplayermode) {
+				switch (direction2) {
+				case UP:
+					tail2.setTranslateX(snake2.get(0).getTranslateX());
+					tail2.setTranslateY(snake2.get(0).getTranslateY() - TILE_SIZE);
+					break;
+				case DOWN:
+					tail2.setTranslateX(snake2.get(0).getTranslateX());
+					tail2.setTranslateY(snake2.get(0).getTranslateY() + TILE_SIZE);
+					break;
+				case LEFT:
+					tail2.setTranslateX(snake2.get(0).getTranslateX() - TILE_SIZE);
+					tail2.setTranslateY(snake2.get(0).getTranslateY());
+					break;
+				case RIGHT:
+					tail2.setTranslateX(snake2.get(0).getTranslateX() + TILE_SIZE);
+					tail2.setTranslateY(snake2.get(0).getTranslateY() );
+				
+			}
+			if (toRemove2)
+				snake2.add(0, tail2);
+			
+			moved2 = true;
+			}
 			/*for (Node rect: snake) {				
 				if (rect != tail && tailX == rect.getTranslateX() && tailY == rect.getTranslateY()) {
 					restartGame();
@@ -134,6 +210,22 @@ public class Level3 extends LevelActions {
 					snakeBody.getBoundsInParent().intersects(rectBottLeft.getBoundsInParent()) ||
 					snakeBody.getBoundsInParent().intersects(rectTopRight.getBoundsInParent())) {
 				endGame();
+			}
+			
+			/*if (col.getBoundsInParent().intersects(rectTop.getBoundsInParent()) ||
+					col.getBoundsInParent().intersects(rectCen.getBoundsInParent()) ||
+					col.getBoundsInParent().intersects(rectBott.getBoundsInParent()) ||
+					col.getBoundsInParent().intersects(rectRight.getBoundsInParent()) ||
+					col.getBoundsInParent().intersects(rectLeft.getBoundsInParent()) ||
+					col.getBoundsInParent().intersects(rectBottRight.getBoundsInParent()) ||
+					col.getBoundsInParent().intersects(rectBottLeft.getBoundsInParent()) ||
+					col.getBoundsInParent().intersects(rectTopRight.getBoundsInParent())) {
+				aCol.setXPos();
+				aCol.setYPos();
+				col.relocate(aCol.getXPos(), aCol.getYPos());       
+				col.getBoundsInParent();
+				root.getChildren().remove(col);
+				root.getChildren().add(col);
 			}
 			
 			/* collision with collectible */
@@ -178,8 +270,8 @@ public class Level3 extends LevelActions {
 				
 			}
 
-			
-		});
+			}
+		);
 		
 		timeline.getKeyFrames().add(frame);
 		timeline.setCycleCount(Timeline.INDEFINITE);
@@ -213,6 +305,35 @@ public class Level3 extends LevelActions {
 		}
 		
 		moved = false;	
+		if (twoplayermode) {
+			if (!moved2)
+				return;
+
+			if (moved2) {
+			switch (event.getCode()) {
+				case W:
+					if (direction2 != Direction.DOWN)
+						direction2 = Direction. UP;
+					break;
+				case S:
+					if (direction2 != Direction.UP)
+						direction2 = Direction.DOWN;
+					break;
+				case A:
+					if (direction2 != Direction.RIGHT)
+						direction2 = Direction.LEFT;
+					break;
+				case D:
+					if (direction2 != Direction.LEFT)
+						direction2 = Direction.RIGHT;
+					break;
+			default:
+				break;
+			}
+		}
+		
+		moved2 = false;
+		}
 	});
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Snake");

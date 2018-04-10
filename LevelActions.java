@@ -25,6 +25,8 @@ public abstract class LevelActions extends Application {
 	protected Stage primaryStage = new Stage();
 	protected Stage primaryStage2 = new Stage();
 	Rectangle head = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
+	protected static boolean twoplayermode = false;
+	protected ObservableList<Node> snake2;
 
 	public LevelActions() {
 		super();
@@ -51,7 +53,7 @@ public abstract class LevelActions extends Application {
 		head.setFill(Color.rgb(241, 249, 12));
 		snake.add(head);
 		this.timeline.play();
-		this.running = true;
+		this.running = true;	
 	}
 	//public abstract Scene run();
 	
