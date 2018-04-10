@@ -183,18 +183,25 @@ public class Level2 extends LevelActions {
 			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
 					snakeBody.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
 					snakeBody.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
+					snakeBody.getBoundsInParent().intersects(topBorder.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
+					snakeBody2.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
 				restartGame();
 				//System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
 			}
 			
 			if (snakeBody.getBoundsInParent().intersects(big.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(center.getBoundsInParent())) {
+					snakeBody.getBoundsInParent().intersects(center.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(big.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(center.getBoundsInParent())) {
 				endGame();
 			}
 			
 			/* collision with collectible */
-			if (tail.getBoundsInParent().intersects(col.getBoundsInParent())){
+			if (tail.getBoundsInParent().intersects(col.getBoundsInParent()) ||
+					tail2.getBoundsInParent().intersects(col.getBoundsInParent())){
 				aCol.setXPos();
 				aCol.setYPos();
 				col.relocate(aCol.getXPos(), aCol.getYPos());       
@@ -210,19 +217,10 @@ public class Level2 extends LevelActions {
 				snake.add(rect);
 	
 			}
-			/*if (obs.getBoundsInParent().intersects(col.getBoundsInParent())) {
-				aCol.setXPos();
-				aCol.setYPos();
-				col.relocate(aCol.getXPos(), aCol.getYPos()); 
-			}
-			if (col.getBoundsInParent().intersects(obs.getBoundsInParent())) {
-				aCol.setXPos();
-				aCol.setYPos();
-				col.relocate(aCol.getXPos(), aCol.getYPos()); 
-			}
+		
 			if (tail.getBoundsInParent().intersects(tail2.getBoundsInParent())) {
 				restartGame();
-			}*/
+			}
 			
 			if (Score.getScore() == score + 1) {
 				primaryStage.close();

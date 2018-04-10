@@ -52,6 +52,7 @@ public class Level extends LevelActions {
 		Rectangle head2 = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
 		head.setFill(Color.rgb(241, 249, 12));
 		head2.setFill(Color.rgb(0, 0, 0));
+		head2.setLayoutY(40);
 		snake.add(head);
 		snake2.add(head2);
 		this.timeline.play();
@@ -240,7 +241,11 @@ public class Level extends LevelActions {
 			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
 					snakeBody.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
 					snakeBody.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
+					snakeBody.getBoundsInParent().intersects(topBorder.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
+					snakeBody2.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
 				endGame();
 				//System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
 			}
@@ -249,7 +254,12 @@ public class Level extends LevelActions {
 					snakeBody.getBoundsInParent().intersects(slamUP.getBoundsInParent()) ||
 					snakeBody.getBoundsInParent().intersects(slamDOWN1.getBoundsInParent()) ||
 					snakeBody.getBoundsInParent().intersects(slamUP1.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(slamMID.getBoundsInParent())) {
+					snakeBody.getBoundsInParent().intersects(slamMID.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(slamDOWN.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(slamUP.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(slamDOWN1.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(slamUP1.getBoundsInParent()) ||
+					snakeBody2.getBoundsInParent().intersects(slamMID.getBoundsInParent())) {
 				endGame();
 				//System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
 			}
@@ -268,7 +278,8 @@ public class Level extends LevelActions {
 			}
 			
 			/* collision with collectible */
-			if (tail.getBoundsInParent().intersects(col.getBoundsInParent())){
+			if (tail.getBoundsInParent().intersects(col.getBoundsInParent()) ||
+					tail2.getBoundsInParent().intersects(col.getBoundsInParent())){
 				aCol.setXPos();
 				aCol.setYPos();
 				col.relocate(aCol.getXPos(), aCol.getYPos());       
@@ -284,19 +295,10 @@ public class Level extends LevelActions {
 				snake.add(rect);
 	
 			}
-			/*if (obs.getBoundsInParent().intersects(col.getBoundsInParent())) {
-				aCol.setXPos();
-				aCol.setYPos();
-				col.relocate(aCol.getXPos(), aCol.getYPos()); 
-			}
-			if (col.getBoundsInParent().intersects(obs.getBoundsInParent())) {
-				aCol.setXPos();
-				aCol.setYPos();
-				col.relocate(aCol.getXPos(), aCol.getYPos()); 
-			}
+			
 			if (tail.getBoundsInParent().intersects(tail2.getBoundsInParent())) {
 				restartGame();
-			}*/
+			}
 			
 			if (Score.getScore() == score + 1) {
 				primaryStage.close();
@@ -305,9 +307,6 @@ public class Level extends LevelActions {
 				level2.start(primaryStage);
 				level2.stopGame();
 				level2.startGame();
-				
-				
-				//primaryStage.close();
 			}
 
 			
