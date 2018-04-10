@@ -14,6 +14,9 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 
 public class Level4 extends LevelActions {
 	
@@ -204,13 +207,16 @@ public class Level4 extends LevelActions {
 			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
 					snakeBody.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
 					snakeBody.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
-					snakeBody.getBoundsInParent().intersects(topBorder.getBoundsInParent()) ||
-					snakeBody2.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
+					snakeBody.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
+				endGame();
+				//System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
+			}
+			
+			if (snakeBody2.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
 					snakeBody2.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
 					snakeBody2.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
 					snakeBody2.getBoundsInParent().intersects(topBorder.getBoundsInParent())) {
 				endGame();
-				//System.out.println("Time Elapsed: " + TimerS.getTotalTime(timeStart, timeEnd));
 			}
 			
 			if (snakeBody.getBoundsInParent().intersects(poly1.getBoundsInParent()) ||
@@ -227,7 +233,12 @@ public class Level4 extends LevelActions {
 			
 			/* collision with collectible */
 			if (tail.getBoundsInParent().intersects(col.getBoundsInParent()) ||
-					tail2.getBoundsInParent().intersects(col.getBoundsInParent())){
+				tail2.getBoundsInParent().intersects(col.getBoundsInParent())){
+				
+				//Collectible sound effect played
+				MediaPlayer collectSoundPlayer = new MediaPlayer(collectSoundMedia);
+				collectSoundPlayer.play();
+				
 				aCol.setXPos();
 				aCol.setYPos();
 				col.relocate(aCol.getXPos(), aCol.getYPos());       
@@ -249,7 +260,7 @@ public class Level4 extends LevelActions {
 				restartGame();
 			}
 			
-			if (Score.getScore() == score + 1) {
+			if (Score.getScore() == score + scoreChange) {
 				primaryStage.close();
 				timeline.stop();
 				Level5 game = new Level5();
