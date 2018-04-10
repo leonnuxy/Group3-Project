@@ -6,8 +6,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 
 public class Collisions {
+	
+	private static String collectSoundFile = "collectSound.mp3";
+	private static Media collectSoundMedia = new Media(new File(collectSoundFile).toURI().toString());
 
 	public static void borderCollisions(Group snakeBody, Rectangle topBorder, Rectangle bottomBorder, Rectangle leftBorder,
 			Rectangle rightBorder) {
@@ -134,6 +140,8 @@ public class Collisions {
 		if (tail.getBoundsInParent().intersects(col.getBoundsInParent()) ||
 				tail2.getBoundsInParent().intersects(col.getBoundsInParent())){
 			
+			MediaPlayer collectSoundPlayer = new MediaPlayer(collectSoundMedia);
+			collectSoundPlayer.play();
 			aCol.setXPos();
 			aCol.setYPos();
 			col.relocate(aCol.getXPos(), aCol.getYPos());       
@@ -146,7 +154,7 @@ public class Collisions {
 			rect.setTranslateY(tailY);
 			Score.setScore(1);
 			snake.add(rect);
-
+			
 		}
 	}
 	
