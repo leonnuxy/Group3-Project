@@ -196,11 +196,11 @@ public class Level4 extends LevelActions {
 			
 			moved2 = true;
 			}
-			/*for (Node rect: snake) {				
+			for (Node rect: snake) {				
 				if (rect != tail && tailX == rect.getTranslateX() && tailY == rect.getTranslateY()) {
 					restartGame();
 				}
-			}*/
+			}
 			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
 					snakeBody.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
 					snakeBody.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||

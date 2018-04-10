@@ -233,11 +233,11 @@ public class Level extends LevelActions {
 		
 			
 			//checks collision with self
-			/*for (Node rect: snake) {				
+			for (Node rect: snake) {				
 				if (rect != tail && tailX == rect.getTranslateX() && tailY == rect.getTranslateY()) {
 					restartGame();
 				}
-			}*/
+			}
 			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
 					snakeBody.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
 					snakeBody.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||

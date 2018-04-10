@@ -177,11 +177,11 @@ public class Level5 extends LevelActions{
 			
 			moved2 = true;
 			}
-			/*for (Node rect: snake) {				
+			for (Node rect: snake) {				
 				if (rect != tail && tailX == rect.getTranslateX() && tailY == rect.getTranslateY()) {
 					restartGame();
 				}
-			}*/
+			}
 			if (snakeBody.getBoundsInParent().intersects(rightBorder.getBoundsInParent()) || 
 					snakeBody.getBoundsInParent().intersects(leftBorder.getBoundsInParent()) ||
 					snakeBody.getBoundsInParent().intersects(bottomBorder.getBoundsInParent()) ||
@@ -223,19 +223,6 @@ public class Level5 extends LevelActions{
 				snake.add(rect);
 	
 			}
-			/*if (obs.getBoundsInParent().intersects(col.getBoundsInParent())) {
-				aCol.setXPos();
-				aCol.setYPos();
-				col.relocate(aCol.getXPos(), aCol.getYPos()); 
-			}
-			if (col.getBoundsInParent().intersects(obs.getBoundsInParent())) {
-				aCol.setXPos();
-				aCol.setYPos();
-				col.relocate(aCol.getXPos(), aCol.getYPos()); 
-			}
-			if (tail.getBoundsInParent().intersects(tail2.getBoundsInParent())) {
-				restartGame();
-			}*/
 			
 			if (Score.getScore() == score + 1) {
 				Difficulty.changeDifficulty(0.01);
