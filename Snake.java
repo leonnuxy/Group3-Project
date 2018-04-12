@@ -1,65 +1,61 @@
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /** 
   creates the playable snake to be used in the games application and to be initialised elsewhere
+  creates two objects of the snake and all its properties.
  */
+
 public class Snake {
 	
 	private static ObservableList<Node> snake;
-	private static Node tail;
+	private static ObservableList<Node> snake2;
+	private Node tail;
+	private Node tail2;
 	private static final double TILE_SIZE = 10;
 	private static Group snake_body = new Group();
-	private static boolean collsion = false;
-	private static double tailX;
-	private static double tailY;
-	private static boolean toRemove;
+	private static Group snake_body2 = new Group();
 	private static Rectangle head; 
+	private static Rectangle head2; 
 	
 	Snake(){}
-	
-	protected static Rectangle getHead() {
-		
-		return head;
-	}
 
-	protected static void setHead(double rectX, double rectY) {
-		head = new Rectangle(rectX, rectY);
-	}
-
-	public static ObservableList<Node> getSnake(){
+	protected static ObservableList<Node> getSnake(){
 		snake = snake_body.getChildren();
 		return snake;
 	}
 	
-	public static Group getSnakeBody() {
-		return snake_body;	
+	protected static ObservableList<Node> getSnake2() {
+		snake2 = snake_body2.getChildren();
+		return snake2;
 	}
 	
-	public static Node getTail() {
+	protected static Rectangle getHead() {
+		head = new Rectangle(TILE_SIZE, TILE_SIZE);
+		return head;
+	}
+	
+	protected static Rectangle getHead2() {
+		head2 = new Rectangle(TILE_SIZE, TILE_SIZE);
+		return head2;
+	}
+	
+	protected static Group getSnake_body2() {
+		return snake_body;
+	}
+	
+	protected static Group getSnakeBody() {
+		return snake_body2;	
+	}
+	
+	protected Node getTail() {
 		return tail;	
 	}
 	
-	public static void updateSnake() {
-		if (toRemove)
-			snake.add(0, tail);
-		Rectangle rect = new Rectangle(TILE_SIZE, TILE_SIZE);
-		rect.setFill(Color.rgb(241, 249, 12));
-		rect.setTranslateX(tailX);
-		rect.setTranslateY(tailY);
-		snake.add(rect);
-		
-	}
-	public static void main(String[] args) {
-//		Node tail2 = snake.get(0);
-//		setHead(10,10);
-//		getSnake().add(head);
-//		Rectangle food = new Rectangle(0,0);
-//		System.out.println(food.getX());
-//		System.out.println(snake.get(0).getLayoutY());
+	protected Node getTail2() {
+		return tail2;
 	}
 	
 }

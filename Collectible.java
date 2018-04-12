@@ -2,21 +2,21 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-/** 
-*This class creates a collectible to be called in a window initializing class 
-*/
+
+/** This class creates a collectible to be called in a window initializing class */
 public class Collectible extends Item {
 	
-	/* Instance variables to set the image for the collectible */
+	//instance variables to set the image for the collectible
 	private String appleLOC = "Collectible.gif";
 	private Image apple = new Image(appleLOC);
     
-    /* Default constructor which sets the Y and X position*/
+    /* Constructor */
     public Collectible(){
         this.setXPos();
         this.setYPos();
+        setImageName("Collectible.png");
     }
-	
+    
     /* Constructor to purposefully place a collectible */
     public Collectible(int arbtyX, int arbtyY){
         this.iteXPos = arbtyX;
@@ -24,10 +24,12 @@ public class Collectible extends Item {
         
     }
 	
-    /* Sets the x position of the collectible to a random integer in different zones of the screen.
-     Zones 1-8 are areas where an instance collectible can be placed */
+	
+    /*
+     * sets the x position of the collectible to a random integer in different zones of the screen
+     */
 	public void setXPos() {
-	    xDefine = rand.nextInt(8 - 1) + 1; // random choice of which zone to place the collectible
+	    xDefine = rand.nextInt(8 - 1) + 1;
 	    
 	    if (xDefine == 1) {
 	        iteXPos = rand.nextInt(100-90) + 90;
@@ -56,10 +58,11 @@ public class Collectible extends Item {
 	    
 	}
 
-	/* Sets the y position of the collectible to a random integer in different zones of the screen.
-     Zones 1-8 are areas where an instance collectible can be placed */
+	/*
+     * sets the y position of the collectible to a random integer in different zones of the screen
+     */
 	public void setYPos() {
-	    yDefine = rand.nextInt(8 - 1) + 1; // random choice of which zone to place the collectible
+	    yDefine = rand.nextInt(8 - 1) + 1;
 	    
 	    if (yDefine == 1) {
 	        iteYPos = rand.nextInt(100-90) + 90;
@@ -89,8 +92,9 @@ public class Collectible extends Item {
 	}
 	
 	
-	
-	/* Creates the collectible with the desired image and with the desired dimensions */
+	/*
+	 * creates the collectible with the desired image and with the desired dimensions
+	 */
 	public Rectangle getCol() {
 		Rectangle colRect = new Rectangle(iteXPos, iteYPos, iteWidth, iteHeight);
 		colRect.setFill(new ImagePattern(apple));
