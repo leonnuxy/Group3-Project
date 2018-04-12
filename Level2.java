@@ -1,9 +1,7 @@
 import java.util.ConcurrentModificationException;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
-import javafx.collections.ObservableList;
 import javafx.scene.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -12,16 +10,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Level2 extends LevelActions {
-
-	/*
-	 * responsible for moving the snake head
-	 */
-	/*public Scene run() {
-		
-		
-		return scene;
-	
-	}*/
 	
 	@Override
 	public void start(Stage primaryStage){
@@ -30,30 +18,26 @@ public class Level2 extends LevelActions {
 		root.setStyle("-fx-background-image: url(Pane.png);");
 		root.setPrefSize(APP_W, APP_H);
 		
-		Group snakeBody2 = new Group();
+		Group snakeBody2 = Snake.getSnake_body2();
 		snake2 = snakeBody2.getChildren();
+	
+		Group snakeBody = Snake.getSnakeBody();
+		snake = snakeBody.getChildren();
 		
-		Circle big = new Circle(150, Color.BLACK);
+		Circle big = new Circle(50, Color.BLACK);
 		big.setCenterX(400); big.setCenterY(400);
-		//26 values to be computed 
-		Polygon center = new Polygon(380, 200, 420, 200, 
-				420, 380, 600, 380, 600, 420, 420, 420, 
-				420, 600, 380, 600, 380, 420, 200, 420, 
-				200, 380, 380, 380, 380, 200);
+		Rectangle centerVer = new Rectangle(380, 200, 40, 400);
 		PathTransition path = new PathTransition();
-		path.setDuration(Duration.seconds(5));
+		path.setDuration(Duration.seconds(20));
 		Circle small = new Circle(1);
 		small.setCenterX(400); small.setCenterY(400);
-		path.setNode(center); path.setPath(small);
+		path.setNode(centerVer); path.setPath(small);
 		path.setCycleCount(PathTransition.INDEFINITE);
 		path.setAutoReverse(true);
 		path.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
 		path.play();
+		root.getChildren().addAll(big, centerVer);
 		
-		root.getChildren().addAll(big, center);
-		
-		Group snakeBody = new Group();
-		snake = snakeBody.getChildren();
 		Collectible aCol = new Collectible(50,50);
 		Rectangle col = aCol.getCol();
 		Obstacle borderRight = new Obstacle(801,0,1,800);
@@ -81,11 +65,13 @@ public class Level2 extends LevelActions {
 			
 			boolean toRemove = snake.size()>1;
 			if (twoplayermode) {
-				boolean toRemove2 = snake2.size()>1;
 			}
 			
-			Node tail = toRemove ? snake.remove(snake.size()-1) : snake.get(0);
-			Node tail2 = toRemove2 ? snake2.remove(snake2.size()-1) : snake2.get(0);
+			Node tail = snakeIns.getTail();
+			Node tail2 = snakeIns.getTail2();
+			
+			tail = toRemove ? snake.remove(snake.size()-1) : snake.get(0);
+			tail2 = toRemove2 ? snake2.remove(snake2.size()-1) : snake2.get(0);
 			
 			double tailX = tail.getTranslateX();
 			double tailY = tail.getTranslateY();
@@ -145,8 +131,8 @@ public class Level2 extends LevelActions {
 			Collisions.selfCollision(snake2, tail2, tail2X, tail2Y);
 			Collisions.borderCollisions(snakeBody, topBorder, bottomBorder, leftBorder, rightBorder);
 			Collisions.borderCollisions(snakeBody2, topBorder, bottomBorder, leftBorder, rightBorder);
-			Collisions.Level2SpecificCollisions(snakeBody, big, center, aCol, col, root);
-			Collisions.Level2SpecificCollisions(snakeBody2, big, center, aCol, col, root);
+			Collisions.Level2SpecificCollisions(snakeBody, big, centerVer, aCol, col, root);
+			Collisions.Level2SpecificCollisions(snakeBody2, big, centerVer, aCol, col, root);
 			Collisions.collectibleCollision(tail, tail2, col, aCol, root, tailX, tailY, snake, TILE_SIZE);
 			Collisions.snakesCollide(tail, tail2);
 			if (LevelActions.endGame) {
