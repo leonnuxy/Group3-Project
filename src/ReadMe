@@ -1,0 +1,5 @@
+Read Me:
+
+The Game is played from the Menu.java Class the test file is included in the Test Folder.
+The Difficulty is determined put the easy, medium and hard buttons. 
+The snake also duplicates when the player gets round the stages 5 times.

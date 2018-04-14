@@ -1,16 +1,11 @@
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import javafx.scene.shape.Rectangle;
-import static org.junit.Assert.assertTrue;
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.*;
+import org.junit.Test;
 import javafx.scene.Node;
+import javafx.scene.shape.Rectangle;
 import javafx.collections.ObservableList;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.hasItem;
 
-class GameTest {
+
+public class GameTest {
 
 	// to see if the snake moves
 	@Test
@@ -22,7 +17,7 @@ class GameTest {
 		tail.setTranslateX(head.getTranslateX());
 		tail.setTranslateY(head.getTranslateY()+1.0);
 		
-		assertThat(tail.getTranslateY(), is(1.0));
+		assertTrue(tail.getTranslateY() == 1.0);
 	}
 
 	// to see if the snake eats the food
@@ -36,7 +31,7 @@ class GameTest {
 		tail.setTranslateY(10);
 		Rectangle food = new Rectangle(10,10);
 		
-		Assert.assertTrue(tail.getBoundsInParent().intersects(food.getBoundsInParent()));
+		assertTrue(tail.getBoundsInParent().intersects(food.getBoundsInParent()));
 	}
 	
 	// added the head the tail and the new body.
@@ -51,8 +46,8 @@ class GameTest {
 		body2.setTranslateY(tail.getTranslateY());
 		snake.add(body2);
 		
-		assertThat(snake.size(), is(3));
-		assertThat(snake, hasItem(body2));
+		assertTrue(snake.size() == (3));
+		assertTrue(snake.contains(body2));
 	}
 	
 	//checks to see if the head x and y are within or out of area.

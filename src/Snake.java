@@ -12,8 +12,8 @@ public class Snake {
 	
 	private static ObservableList<Node> snake;
 	private static ObservableList<Node> snake2;
-	private static Node tail;
-	private static Node tail2;
+	private Node tail;
+	private Node tail2;
 	private static final double TILE_SIZE = 10;
 	private static Group snake_body = new Group();
 	private static Group snake_body2 = new Group();
@@ -22,7 +22,7 @@ public class Snake {
 	
 	Snake(){}
 
-	public static ObservableList<Node> getSnake(){
+	protected static ObservableList<Node> getSnake(){
 		snake = snake_body.getChildren();
 		return snake;
 	}
@@ -37,7 +37,7 @@ public class Snake {
 		return head;
 	}
 	
-	protected Rectangle getHead2() {
+	protected static Rectangle getHead2() {
 		head2 = new Rectangle(TILE_SIZE, TILE_SIZE);
 		return head2;
 	}
@@ -46,15 +46,15 @@ public class Snake {
 		return snake_body;
 	}
 	
-	public static Group getSnakeBody() {
+	protected static Group getSnakeBody() {
 		return snake_body2;	
 	}
 	
-	public static Node getTail() {
+	protected Node getTail() {
 		return tail;	
 	}
 	
-	protected static Node getTail2() {
+	protected Node getTail2() {
 		return tail2;
 	}
 	
